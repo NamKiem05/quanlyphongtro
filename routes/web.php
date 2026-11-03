@@ -9,13 +9,17 @@ Route::get('/', function () {
     return view('/auth/login');
 });
 
-Route::middleware(['auth', 'owner'])->prefix('admin')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
     //Quản lý nhà trọ
     Route::get('/tenants', [TenantController::class, 'index'])
         ->name('tenants.index');
+    Route::post('/tenants', [TenantController::class, 'store'])
+        ->name('tenants.store');
+    Route::put('/tenants/{tenant}', [TenantController::class, 'update'])
+        ->name('tenants.update');
 });
 
 // Khu vực Client

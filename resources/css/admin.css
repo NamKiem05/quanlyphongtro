@@ -57,7 +57,6 @@ header {
 .box-tag form input {
     width: 250px;
     height: 35px;
-    border-radius: 20px;
     border: none;
     background-color: #ececec;
     padding-left: 40px;
@@ -82,7 +81,7 @@ header {
 .box-header ul li {
     padding: 10px;
     font-size: 25px;
-    border-radius: 10px;
+
     cursor: pointer;
 }
 
@@ -105,7 +104,6 @@ header {
     gap: 10px;
     height: 80%;
     padding: 0 10px;
-    border-radius: 10px;
 }
 .header-login:hover {
     background-color: #d1fae5;
@@ -147,7 +145,7 @@ aside {
     left: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background-color: #064e3b;
+    background-color: #292929;
     color: white;
     transition: transform 0.3s ease;
     z-index: 1001;
@@ -173,7 +171,6 @@ aside {
 .menu-aside ul li {
     width: 100%;
     height: 50px;
-    border-radius: 10px;
     padding: 15px;
     display: flex;
     justify-content: space-between;
@@ -181,11 +178,11 @@ aside {
     box-sizing: border-box;
 }
 .menu-aside ul li:hover {
-    background-color: #166534;
+    background-color: #818181;
 }
 .fa-solid {
     font-size: 20px;
-    color: #d1fae5;
+    color: #fbfcfb;
     margin-right: 10px;
 }
 .fa-angle-down {
@@ -210,7 +207,6 @@ css main content */
 .filter-container {
     background: #ffffff;
     padding: 22px;
-    border-radius: 12px;
     border: 1px solid #e5e7eb;
     margin-bottom: 22px;
 }
@@ -235,35 +231,6 @@ css main content */
 .filter-header p {
     font-size: 14px;
     color: #94a3b8 !important;
-}
-
-/* Nút thêm nhà trọ */
-.btn-add-property {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: 11px 20px;
-    background-color: #15803d;
-    color: #ffffff;
-    border: 1px solid #15803d;
-    border-radius: 8px;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.btn-add-property i {
-    font-size: 14px;
-}
-
-.btn-add-property:hover {
-    background-color: #166534;
-    border-color: #166534;
-    color: #ffffff;
-    box-shadow: 0 4px 10px rgba(21, 128, 61, 0.2);
-    transform: translateY(-1px);
 }
 
 /* Mobile */
@@ -294,7 +261,7 @@ css main content */
 .filter-form {
     display: flex;
     align-items: flex-end;
-    gap: 15px;
+    gap: 10px;
     flex-wrap: wrap;
 }
 
@@ -315,10 +282,9 @@ css main content */
 .filter-group input,
 .filter-group select {
     width: 100%;
-    height: 42px;
+    height: 30px;
     padding: 0 12px;
     border: 1px solid #e5e7eb;
-    border-radius: 7px;
     outline: none;
     background: #fff;
     color: #374151;
@@ -328,8 +294,8 @@ css main content */
 
 .filter-group input:focus,
 .filter-group select:focus {
-    border-color: #16a34a;
-    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    border-color: #e7e7e7;
+    box-shadow: 0 0 0 3px rgba(187, 187, 187, 0.1);
 }
 
 /* Search */
@@ -342,6 +308,7 @@ css main content */
 }
 
 .input-search i {
+    font-size: 15px;
     position: absolute;
     left: 12px;
     top: 50%;
@@ -356,45 +323,51 @@ css main content */
 /* Buttons */
 .filter-actions {
     display: flex;
-    gap: 8px;
+    gap: 3px;
 }
 
 .filter-actions button {
-    height: 42px;
-    padding: 0 16px;
-    border-radius: 7px;
+    height: 30px;
+    padding: 0 10px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 7px;
+    gap: 2px;
     transition: 0.2s;
 }
 
 /* Lọc */
 .btn-filter {
-    background: #15803d;
+    background: #0569ff;
     color: white;
-    border: 1px solid #15803d;
+    border: 1px solid #1975ff;
 }
 
 .btn-filter:hover {
-    background: #166534;
+    background: #68afff;
 }
 
 /* Làm mới */
 .btn-reset {
-    background: #fff;
-    color: #64748b;
-    border: 1px solid #e5e7eb;
+    background: #fa5454;
+    color: #ffffff;
+    border: 1px solid #fd7c7c;
 }
 
 .btn-reset:hover {
-    background: #f8fafc;
-    border-color: #cbd5e1;
+    background: #ff8383;
+    border-color: #ff6161;
 }
-
+.fa-filter {
+    font-size: 12px;
+    color: white;
+}
+.fa-rotate-left {
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+}
 /* Responsive */
 @media (max-width: 768px) {
     .filter-form {
@@ -416,11 +389,83 @@ css main content */
     }
 }
 
+/* Nút thêm nhà trọ */
+.box-btn {
+    position: relative;
+    width: 100%;
+    justify-content: right;
+    align-items: center;
+    display: flex;
+}
+.btn-add-property {
+    margin: 10px 5px;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: #0235a3;
+    color: #ffffff;
+    border: 1px solid #fbfcfb;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+.btn-exe {
+    margin: 10px 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: #07700f;
+    color: #ffffff;
+    border: 1px solid #fbfcfb;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+.btn-pdf {
+    margin: 10px 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: #a00000;
+    color: #ffffff;
+    border: 1px solid #fbfcfb;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+.fa-file-pdf {
+    font-size: 15px;
+}
+.fa-file-excel {
+    font-size: 15px;
+}
+
+.btn-add-property i {
+    font-size: 14px;
+}
+
+.btn-add-property:hover {
+    background-color: #3f7bfd;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(21, 128, 61, 0.2);
+}
+.btn-exe:hover {
+    background-color: #40a540;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(21, 128, 61, 0.2);
+}
+.btn-pdf:hover {
+    background-color: #ca6161;
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(255, 135, 135, 0.2);
+}
 .main-content {
     width: 100%;
     margin-top: 20px;
     background-color: white;
-    border-radius: 10px;
+
     border-bottom: 1px solid rgb(236, 236, 236);
     box-shadow: 0 2px 5px rgb(236, 236, 236);
 }
@@ -430,7 +475,6 @@ css main content */
     width: 100%;
     border-collapse: collapse;
     background-color: #ffffff;
-    border-radius: 12px;
     overflow: hidden;
     font-size: 14px;
     color: #374151;
@@ -438,21 +482,21 @@ css main content */
 
 /* Tiêu đề bảng */
 .table thead {
-    background-color: #f0fdf4;
+    background-color: #494949;
     text-align: center;
 }
 
 .table thead td {
-    padding: 16px 20px;
+    padding: 10px 10px;
     font-weight: 600;
-    color: #166534;
-    border-bottom: 1px solid #dcfce7;
+    color: #ffffff;
+    border-bottom: 1px solid #707070;
     white-space: nowrap;
 }
 
 /* Nội dung bảng */
 .table tbody td {
-    padding: 16px 20px;
+    padding: 5px 20px;
     border-bottom: 1px solid #f1f5f9;
     vertical-align: middle;
     text-align: center;
@@ -484,7 +528,6 @@ css main content */
     display: inline-block;
     margin: 0;
     padding: 6px 12px;
-    border-radius: 20px;
     background-color: #dcfce7;
     color: #15803d;
     font-size: 12px;
@@ -513,82 +556,263 @@ css main content */
     align-items: center;
     justify-content: center;
     gap: 6px;
-    padding: 7px 12px;
-    border-radius: 6px;
+    padding: 5px 5px;
     text-decoration: none;
     font-size: 13px;
-    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.action-buttons button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 5px 5px;
+    text-decoration: none;
+    font-size: 13px;
     transition: all 0.2s ease;
 }
 
 /* Nút sửa */
 .btn-edit {
-    background-color: #eff6ff;
-    color: #2563eb;
-    border: 1px solid #bfdbfe;
+    background-color: #0565e2;
+    color: #ffffff;
 }
 
 .btn-edit:hover {
-    background-color: #2563eb;
-    color: #ffffff;
-}
-.btn-edit:hover i {
+    background-color: #8fb0f7;
     color: #ffffff;
 }
 /* Nút xem */
-.btn-show{
-  background-color: #f7f8cc;
-    color: rgb(255, 187, 0);
-    border: 1px solid #f7e549;
+.btn-show {
+    background-color: #e69e03;
+    color: rgb(255, 255, 255);
 }
 .btn-show:hover {
-    background-color: rgb(255, 187, 0);
-    color: #ffffff;
-}
-.btn-show:hover i {
+    background-color: rgb(255, 227, 150);
     color: #ffffff;
 }
 /* Nút xóa */
 .btn-delete {
-    background-color: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #fecaca;
-}
-.btn-delete:hover i {
-    color: #ffffff;
+    background-color: #e60000;
+    color: #fdfbfb;
 }
 
 .btn-delete:hover {
-    background-color: #dc2626;
+    background-color: #ff9595;
     color: #ffffff;
 }
-.fa-pen-to-square {
-    color: #2563eb;
-}
-.fa-eye{
-  color: rgb(255, 187, 0);
-}
-.fa-trash {
-    color: #dc2626;
-}
-.fa-filter {
-    color: white;
-}
-.fa-rotate-left {
-    color: gray;
-}
+
 .role-admin {
     background-color: #fef2f2;
     border: 1px solid rgb(255, 105, 105);
     color: rgb(255, 0, 0);
     padding: 6px 12px;
-    border-radius: 10px;
 }
 
-.role-tenant {
-    background-color: #ddfced;
-    border: 1px solid green;
-    color: green;
-    padding: 6px 12px;
+.box-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    
+    width: 400px;
+    padding: 25px;
+    background: white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    
+}
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+.modal-overlay.active {
+    display: block;
+}
+.btn-close-modal {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: #f14646;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+/* from them người */
+
+.box-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 600px;
+    transform: translate(-50%, -50%);
+    max-width: calc(100% - 30px);
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 25px;
+    z-index: 1000;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 25px;
+}
+
+.modal-header h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 5px;
+}
+
+.modal-header p {
+    color: #888;
+    margin: 0;
+    font-size: 14px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex: 1;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-group label span {
+    color: red;
+}
+
+.form-group input {
+    width: 100%;
+    height: 30px;
+    padding: 0 12px;
+    border: 1px solid #e5e7eb;
+    outline: none;
+    background: #fff;
+    color: #374151;
+    font-size: 13px;
+    transition: 0.2s;
+}
+.form-group select {
+    width: 100%;
+    height: 30px;
+    padding: 0 12px;
+    border: 1px solid #e5e7eb;
+    outline: none;
+    background: #fff;
+    color: #374151;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.form-group input:focus {
+    border-color: #636363;
+    box-shadow: 0 0 0 3px rgba(76, 77, 76, 0.1);
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.modal-actions button {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-cancel {
+    border: 1px solid #ddd;
+    background: white;
+}
+
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    background-color: #0672ff;
+    color: #ffffff;
+    border: 1px solid #fbfcfb;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+.btn-submit:hover {
+    background: #1e8ecf;
+}
+.cccd-upload {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.upload-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.upload-box {
+    width: 80px;
+    height: 80px;
+    border: 2px dashed #e0e6e2;
     border-radius: 10px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+    transition: 0.2s;
+}
+
+.upload-box:hover {
+    border-color: #6d6d6d;
+    background: #cecfcf;
+}
+
+.upload-box i {
+    font-size: 15px;
+    color: #6a6b6b;
+}
+
+.upload-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+}
+
+.upload-item span {
+    font-size: 13px;
+    color: #555;
+}
+
+@media (max-width: 550px) {
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
 }

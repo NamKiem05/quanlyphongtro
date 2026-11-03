@@ -11,10 +11,7 @@
                     Quản lý danh sách tài khoản hệ thống
                 </p>
             </div>
-            <a href="#" class="btn-add-property">
-                <i class="fa-solid fa-plus"></i>
-                Thêm người
-            </a>
+
         </div>
 
         <form action="{{ route('tenants.index') }}" method="GET" class="filter-form">
@@ -30,11 +27,25 @@
 
             <!-- Trạng thái -->
             <div class="filter-group">
-                <label>Vai trò</label>
-                <select>
-                    <option value="">Tất cả vai trò</option>
-                    <option value="admin">Chủ nhà</option>
-                    <option value="client">Người thuê</option>
+                <label>Giới tính</label>
+
+                <select name="gender" onchange="this.form.submit()">
+                    <option value="">Tất cả giới tính</option>
+
+                    <option value="male"
+                        {{ request('gender') == 'male' ? 'selected' : '' }}>
+                        Nam
+                    </option>
+
+                    <option value="female"
+                        {{ request('gender') == 'female' ? 'selected' : '' }}>
+                        Nữ
+                    </option>
+
+                    <option value="other"
+                        {{ request('gender') == 'other' ? 'selected' : '' }}>
+                        Khác
+                    </option>
                 </select>
             </div>
 
@@ -58,7 +69,7 @@
 
                 <button type="reset" class="btn-reset">
                     <i class="fa-solid fa-rotate-left"></i>
-                    Làm mới
+                    Bỏ lọc
                 </button>
             </div>
 
@@ -66,6 +77,22 @@
     </div>
 
     <div class="main-content">
+        <div class="box-btn">
+            <button type="button"
+                class="btn-add-property"
+                id="btnAddTenant">
+                <i class="fa-solid fa-plus"></i>
+                Thêm người
+            </button>
+            <a href="#" class="btn-exe">
+                <i class="fa-solid fa-file-excel"></i>
+                Excel
+            </a>
+            <a href="#" class="btn-pdf">
+                <i class="fa-solid fa-file-pdf"></i>
+                Xuất PDF
+            </a>
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -74,7 +101,7 @@
                     <td>Email</td>
                     <td>Số điện thoại</td>
                     <td>Số CCCD</td>
-                    <td>Vai trò</td>
+                    <td>Giới tính</td>
                     <td>Ngày vào</td>
                     <td>Hành động</td>
                 </tr>
@@ -100,7 +127,7 @@
                     </td>
                     <td>{{ $tenant->identity_number }}</td>
                     <td>
-                        {{ $tenant->date_of_birth}}
+                        {{ $tenant->gender === "male" ? "Nam" : "Nữ"}}
                     </td>
 
                     <td>
@@ -108,17 +135,39 @@
                     </td>
 
                     <td class="action-buttons">
-                        <a href="#" class="btn-edit">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                            Sửa
-                        </a>
-                        <a href="#" class="btn-show">
-                            <i class="fa-solid fa-eye"></i>
+                        <button type="button"
+                            class="btn-show js-tenant-action"
+                            data-mode="view"
+                            data-name="{{ $tenant->full_name }}"
+                            data-phone="{{ $tenant->phone }}"
+                            data-email="{{ $tenant->email }}"
+                            data-identity="{{ $tenant->identity_number }}"
+                            data-birth="{{ $tenant->date_of_birth }}"
+                            data-front="{{ $tenant->identity_front ? asset('storage/' . $tenant->identity_front) : '' }}"
+                            data-back="{{ $tenant->identity_back ? asset('storage/' . $tenant->identity_back) : '' }}"
+                            data-gender="{{ $tenant->gender }}"
+                            data-address="{{ $tenant->permanent_address }}"
+                            data-note="{{ $tenant->note }}">
                             Xem
-                        </a>
+                        </button>
 
+                        <button type="button"
+                            class="btn-edit js-tenant-action"
+                            data-mode="edit"
+                            data-name="{{ $tenant->full_name }}"
+                            data-phone="{{ $tenant->phone }}"
+                            data-email="{{ $tenant->email }}"
+                            data-identity="{{ $tenant->identity_number }}"
+                            data-birth="{{ $tenant->date_of_birth }}"
+                            data-front="{{ $tenant->identity_front ? asset('storage/' . $tenant->identity_front) : '' }}"
+                            data-back="{{ $tenant->identity_back ? asset('storage/' . $tenant->identity_back) : '' }}"
+                            data-gender="{{ $tenant->gender }}"
+                            data-address="{{ $tenant->permanent_address }}"
+                            data-note="{{ $tenant->note }}"
+                            data-update-url="{{ route('tenants.update', $tenant->id) }}">
+                            Sửa
+                        </button>
                         <a href="#" class="btn-delete">
-                            <i class="fa-solid fa-trash"></i>
                             Xóa
                         </a>
                     </td>
@@ -138,4 +187,238 @@
         </table>
     </div>
 </main>
+
+<!-- form modal -->
+<div class="modal-overlay" id="tenantModal">
+    <div class="box-modal">
+        <div class="modal-header">
+            <div>
+                <h3 id="modalTitle">Thêm người thuê</h3>
+                <p>Nhập thông tin người thuê mới</p>
+            </div>
+        </div>
+
+        {{-- Hiển thị lỗi validation --}}
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        <form id="tenantForm"
+            action="{{ route('tenants.store') }}"
+            method="POST" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="_method" id="formMethod" value="POST">
+
+            <div class="form-group">
+                <label>Họ và tên <span>*</span></label>
+                <input type="text" name="full_name" id="full_name" value="{{ old('full_name') }}" placeholder="Nhập họ và tên" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Số điện thoại <span>*</span></label>
+                    <input type="text" name="phone" id="phone" placeholder="Nhập số điện thoại">
+                </div>
+
+                <div class="form-group">
+                    <label>Email <span>*</span></label>
+                    <input type="email" name="email" id="email" placeholder="example@gmail.com">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Số CCCD <span>*</span></label>
+                    <input type="text" name="identity_number" id="identity_number" placeholder="Nhập số CCCD">
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày sinh <span>*</span></label>
+                    <input type="date" name="date_of_birth" id="date_of_birth">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Giới tính</label>
+                <select name="gender" id="gender">
+                    <option value="">Chọn giới tính <span>*</span></option>
+                    <option value="male">Nam</option>
+                    <option value="female">Nữ</option>
+                    <option value="other">Khác</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Ảnh căn cước công dân <span>*</span></label>
+
+                <div class="cccd-upload">
+                    <div class="upload-item">
+                        <label for="identity_front" class="upload-box">
+                            <i class="fa-solid fa-plus"></i>
+                            <img id="previewFront" src="" alt="">
+                        </label>
+                        <input type="file" name="identity_front"
+                            id="identity_front" accept="image/*" hidden>
+                        <span>Mặt trước</span>
+                    </div>
+
+                    <div class="upload-item">
+                        <label for="identity_back" class="upload-box">
+                            <i class="fa-solid fa-plus"></i>
+                            <img id="previewBack" src="" alt="">
+                        </label>
+                        <input type="file" name="identity_back"
+                            id="identity_back" accept="image/*" hidden>
+                        <span>Mặt sau</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Địa chỉ thường trú <span>*</span></label>
+                <input type="text" name="permanent_address"
+                    id="permanent_address" placeholder="Xã, phường, tỉnh,.....">
+            </div>
+
+            <div class="form-group">
+                <label>Ghi chú <span>*</span></label>
+                <textarea name="note" id="note" placeholder="Nhập ghi chú"></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" id="cancelModal" class="btn-close-modal">
+                    Hủy
+                </button>
+
+                <button type="submit" class="btn-submit" id="btnSubmit">
+                    <i class="fa-solid fa-download"></i>
+                    Lưu
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+</div>
 @endsection
+<!-- 
+{{-- Hiển thị lỗi validation --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action=""
+              method="POST"
+              enctype="multipart/form-data">
+
+            @csrf
+
+            <div class="form-group">
+                <label>Họ và tên <span>*</span></label>
+                <input type="text"
+                       name="full_name"
+                       value="{{ old('full_name') }}"
+                       placeholder="Nhập họ và tên"
+                       required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Số điện thoại <span>*</span></label>
+                    <input type="tel"
+                           name="phone"
+                           value="{{ old('phone') }}"
+                           placeholder="Nhập số điện thoại"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email"
+                           name="email"
+                           value="{{ old('email') }}"
+                           placeholder="example@gmail.com">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Số CCCD</label>
+                    <input type="text"
+                           name="identity_number"
+                           value="{{ old('identity_number') }}"
+                           placeholder="Nhập số CCCD">
+                </div>
+
+                <div class="form-group">
+                    <label>Ngày sinh</label>
+                    <input type="date"
+                           name="date_of_birth"
+                           value="{{ old('date_of_birth') }}">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Giới tính</label>
+                <select name="gender">
+                    <option value="">-- Chọn giới tính --</option>
+                    <option value="male" @selected(old('gender') == 'male')>Nam</option>
+                    <option value="female" @selected(old('gender') == 'female')>Nữ</option>
+                    <option value="other" @selected(old('gender') == 'other')>Khác</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Địa chỉ thường trú</label>
+                <textarea name="permanent_address"
+                          rows="2"
+                          placeholder="Nhập địa chỉ thường trú">{{ old('permanent_address') }}</textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Ảnh CCCD mặt trước</label>
+                    <input type="file"
+                           name="identity_front"
+                           accept="image/*">
+                </div>
+
+                <div class="form-group">
+                    <label>Ảnh CCCD mặt sau</label>
+                    <input type="file"
+                           name="identity_back"
+                           accept="image/*">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Ghi chú</label>
+                <textarea name="note"
+                          rows="3"
+                          placeholder="Nhập ghi chú nếu có">{{ old('note') }}</textarea>
+            </div>
+
+            <div class="modal-actions">
+
+                <button type="button"
+                        id="cancelAddTenant"
+                        class="btn-cancel">
+                    Hủy
+                </button>
+
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-plus"></i>
+                    Thêm người thuê
+                </button>
+
+            </div>
+
+        </form> -->

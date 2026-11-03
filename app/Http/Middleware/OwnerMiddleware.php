@@ -10,7 +10,7 @@ class OwnerMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->role !== 'owner') {
+        if ($request->user()->role !== 'admin') {
             
         }
 

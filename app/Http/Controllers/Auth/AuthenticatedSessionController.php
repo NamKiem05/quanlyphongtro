@@ -34,11 +34,11 @@ class AuthenticatedSessionController extends Controller
         $user = auth()->user();
 
         // Phân quyền chuyển hướng
-        if ($user->role === 'owner') {
+        if ($user->role === 'admin') {
             return redirect()->route('dashboard');
         }
 
-        if ($user->role === 'user') {
+        if ($user->role === 'client') {
             return redirect()->route('client.home');
         }
 
