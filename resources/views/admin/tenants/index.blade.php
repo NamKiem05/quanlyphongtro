@@ -51,12 +51,28 @@
 
             <!-- Sắp xếp -->
             <div class="filter-group">
-                <label>Sắp xếp</label>
-                <select>
-                    <option value="newest">Mới nhất</option>
-                    <option value="oldest">Cũ nhất</option>
-                    <option value="name_asc">Tên A - Z</option>
-                    <option value="name_desc">Tên Z - A</option>
+                <label for="sort">Sắp xếp</label>
+
+                <select name="sort" id="sort" onchange="this.form.submit()">
+                    <option value="newest"
+                        {{ request('sort', 'newest') == 'newest' ? 'selected' : '' }}>
+                        Mới nhất
+                    </option>
+
+                    <option value="oldest"
+                        {{ request('sort') == 'oldest' ? 'selected' : '' }}>
+                        Cũ nhất
+                    </option>
+
+                    <option value="name_asc"
+                        {{ request('sort') == 'name_asc' ? 'selected' : '' }}>
+                        Tên A - Z
+                    </option>
+
+                    <option value="name_desc"
+                        {{ request('sort') == 'name_desc' ? 'selected' : '' }}>
+                        Tên Z - A
+                    </option>
                 </select>
             </div>
 
@@ -307,7 +323,6 @@
         <h3>Xác nhận xóa người thuê</h3>
 
         <p>
-            Anh có chắc chắn muốn xóa người thuê
             <strong id="tenantName"></strong>?
         </p>
 
@@ -326,7 +341,7 @@
 
                 <button type="submit" class="btn-confirm-delete">
                     <i class="fa-solid fa-trash"></i>
-                    Xóa người thuê
+                    Xóa
                 </button>
             </div>
         </form>

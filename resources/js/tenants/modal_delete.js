@@ -1,5 +1,4 @@
 // Modal xóa
-
 const deleteModal = document.getElementById("deleteModal");
 const deleteForm = document.getElementById("deleteForm");
 const tenantName = document.getElementById("tenantName");

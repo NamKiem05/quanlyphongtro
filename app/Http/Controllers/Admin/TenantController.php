@@ -14,6 +14,7 @@ class TenantController extends Controller
     public function index(Request $request)
     {
         $query = Tenant::query();
+        $sort = $request->input('sort', 'newest');
 
         // Tìm kiếm theo tên hoặc email
         // Lọc theo giới tính
@@ -28,6 +29,24 @@ class TenantController extends Controller
                     ->orWhere('email', 'like', "%{$keyword}%")
                     ->orWhere('phone', 'like', "%{$keyword}%");
             });
+        }
+        switch ($sort) {
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+
+            case 'name_asc':
+                $query->orderBy('full_name', 'asc');
+                break;
+
+            case 'name_desc':
+                $query->orderBy('full_name', 'desc');
+                break;
+
+            case 'newest':
+            default:
+                $query->orderBy('created_at', 'desc');
+                break;
         }
 
         // Lấy danh sách người dùng, mỗi trang 10 người

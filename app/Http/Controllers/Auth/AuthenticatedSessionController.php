@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
 
         // Phân quyền chuyển hướng
         if ($user->role === 'admin') {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('success', 'Đăng nhập thành công!');
         }
 
         if ($user->role === 'client') {
