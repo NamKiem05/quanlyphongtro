@@ -84,7 +84,7 @@
                 <i class="fa-solid fa-plus"></i>
                 Thêm người
             </button>
-            <a href="#" class="btn-exe">
+            <a href="{{ route('tenants.export') }}" class="btn-exe">
                 <i class="fa-solid fa-file-excel"></i>
                 Excel
             </a>
@@ -148,6 +148,7 @@
                             data-gender="{{ $tenant->gender }}"
                             data-address="{{ $tenant->permanent_address }}"
                             data-note="{{ $tenant->note }}">
+                            <i class="fa-solid fa-eye"></i>
                             Xem
                         </button>
 
@@ -165,21 +166,24 @@
                             data-address="{{ $tenant->permanent_address }}"
                             data-note="{{ $tenant->note }}"
                             data-update-url="{{ route('tenants.update', $tenant->id) }}">
+                            <i class="fa-solid fa-edit"></i>
                             Sửa
                         </button>
-                        <a href="#" class="btn-delete">
+                        <button type="button"
+                            class="btn-delete"
+                            data-url="{{ route('tenants.delete', $tenant->id) }}"
+                            data-name="{{ $tenant->full_name }}">
+
+                            <i class="fa-solid fa-trash"></i>
                             Xóa
-                        </a>
+
+                        </button>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center py-5">
-                        <i class="fa-solid fa-building-circle-exclamation fs-1 text-muted mb-3"></i>
-                        <h6 class="fw-semibold">Chưa có nhà trọ nào</h6>
-                        <p class="text-muted mb-0">
-                            Hãy thêm nhà trọ đầu tiên của bạn.
-                        </p>
+                    <td colspan="8" class="text-center py-5" height="50px">
+                        Danh sách trống
                     </td>
                 </tr>
                 @endforelse
@@ -197,17 +201,6 @@
                 <p>Nhập thông tin người thuê mới</p>
             </div>
         </div>
-
-        {{-- Hiển thị lỗi validation --}}
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
 
         <form id="tenantForm"
             action="{{ route('tenants.store') }}"
@@ -302,123 +295,42 @@
     </div>
 
 </div>
-@endsection
-<!-- 
-{{-- Hiển thị lỗi validation --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+<!-- Modal xác nhận xóa -->
+<div class="modal-delete" id="deleteModal">
 
-        <form action=""
-              method="POST"
-              enctype="multipart/form-data">
+    <div class="modal-delete-content">
 
+        <div class="delete-icon">
+            <i class="fa-solid fa-trash-can"></i>
+        </div>
+
+        <h3>Xác nhận xóa người thuê</h3>
+
+        <p>
+            Anh có chắc chắn muốn xóa người thuê
+            <strong id="tenantName"></strong>?
+        </p>
+
+        <span class="delete-warning">
+            Hành động này không thể hoàn tác!
+        </span>
+
+        <form id="deleteForm" method="POST">
             @csrf
+            @method('DELETE')
 
-            <div class="form-group">
-                <label>Họ và tên <span>*</span></label>
-                <input type="text"
-                       name="full_name"
-                       value="{{ old('full_name') }}"
-                       placeholder="Nhập họ và tên"
-                       required>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Số điện thoại <span>*</span></label>
-                    <input type="tel"
-                           name="phone"
-                           value="{{ old('phone') }}"
-                           placeholder="Nhập số điện thoại"
-                           required>
-                </div>
-
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email"
-                           name="email"
-                           value="{{ old('email') }}"
-                           placeholder="example@gmail.com">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Số CCCD</label>
-                    <input type="text"
-                           name="identity_number"
-                           value="{{ old('identity_number') }}"
-                           placeholder="Nhập số CCCD">
-                </div>
-
-                <div class="form-group">
-                    <label>Ngày sinh</label>
-                    <input type="date"
-                           name="date_of_birth"
-                           value="{{ old('date_of_birth') }}">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Giới tính</label>
-                <select name="gender">
-                    <option value="">-- Chọn giới tính --</option>
-                    <option value="male" @selected(old('gender') == 'male')>Nam</option>
-                    <option value="female" @selected(old('gender') == 'female')>Nữ</option>
-                    <option value="other" @selected(old('gender') == 'other')>Khác</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Địa chỉ thường trú</label>
-                <textarea name="permanent_address"
-                          rows="2"
-                          placeholder="Nhập địa chỉ thường trú">{{ old('permanent_address') }}</textarea>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>Ảnh CCCD mặt trước</label>
-                    <input type="file"
-                           name="identity_front"
-                           accept="image/*">
-                </div>
-
-                <div class="form-group">
-                    <label>Ảnh CCCD mặt sau</label>
-                    <input type="file"
-                           name="identity_back"
-                           accept="image/*">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Ghi chú</label>
-                <textarea name="note"
-                          rows="3"
-                          placeholder="Nhập ghi chú nếu có">{{ old('note') }}</textarea>
-            </div>
-
-            <div class="modal-actions">
-
-                <button type="button"
-                        id="cancelAddTenant"
-                        class="btn-cancel">
+            <div class="modal-delete-actions">
+                <button type="button" id="btnCancel">
                     Hủy
                 </button>
 
-                <button type="submit" class="btn-submit">
-                    <i class="fa-solid fa-plus"></i>
-                    Thêm người thuê
+                <button type="submit" class="btn-confirm-delete">
+                    <i class="fa-solid fa-trash"></i>
+                    Xóa người thuê
                 </button>
-
             </div>
+        </form>
 
-        </form> -->
+    </div>
+</div>
+@endsection

@@ -20,6 +20,11 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ->name('tenants.store');
     Route::put('/tenants/{tenant}', [TenantController::class, 'update'])
         ->name('tenants.update');
+    Route::delete('/tenants/delete/{tenant}', [TenantController::class, 'delete'])
+        ->name('tenants.delete');
+    // xuất excel
+    Route::get('/tenants/export', [TenantController::class, 'export'])
+        ->name('tenants.export');
 });
 
 // Khu vực Client

@@ -39,32 +39,9 @@ header {
     align-items: center;
 }
 .box-tag i {
-    color: #064e3b;
+    color: #080808;
     font-size: 20px;
 }
-.box-tag form {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-left: 30px;
-}
-.box-tag form i {
-    position: absolute;
-    left: 10px;
-    color: gray;
-    font-size: 17px;
-}
-.box-tag form input {
-    width: 250px;
-    height: 35px;
-    border: none;
-    background-color: #ececec;
-    padding-left: 40px;
-}
-.box-tag form input::placeholder {
-    font-size: 16px;
-}
-
 .box-header {
     width: 320px;
     height: 100%;
@@ -86,10 +63,10 @@ header {
 }
 
 .box-header ul li:hover {
-    background-color: #d1fae5;
+    background-color: #eeeeee;
 }
 .box-header ul li i {
-    color: #064e3b;
+    color: #020202;
 }
 
 .avtar-admin {
@@ -104,18 +81,18 @@ header {
     gap: 10px;
     height: 80%;
     padding: 0 10px;
+    cursor: pointer;
 }
 .header-login:hover {
-    background-color: #d1fae5;
+    background-color: #f3f3f3;
 }
 .admin {
     display: flex;
     flex-direction: column;
 }
 .name-admin {
-    font-weight: 550;
     display: block;
-    font-size: 15px;
+    font-size: 13px;
 }
 .status-admin {
     font-size: 12px;
@@ -134,8 +111,128 @@ header {
     background-color: green;
 }
 .header-login i {
-    color: #064e3b;
+    color: #0d0e0d;
     font-size: 15px;
+}
+
+/* menu-login */
+.menu-login {
+    position: absolute;
+    top: 65px;
+    right: 10px;
+    width: 220px;
+    padding: 15px;
+    background: #fff;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.12);
+    border: 1px solid #eee;
+    z-index: 999;
+    display: none;
+}
+
+.menu-login.active {
+    display: block;
+}
+
+/* Thông tin người dùng */
+.menu-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 35px;
+    height: 35px;
+    background: #000000;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.user-info h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+}
+
+.user-info span {
+    font-size: 12px;
+    color: #888;
+}
+
+/* Đường phân cách */
+.menu-divider {
+    height: 1px;
+    background: #eee;
+    margin: 10px 0;
+}
+
+/* Các mục menu */
+.menu-login a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 10px;
+    text-decoration: none;
+    color: #444;
+    font-size: 14px;
+    border-radius: 7px;
+    transition: 0.2s;
+}
+
+.menu-login a i {
+    width: 18px;
+    color: #000000;
+    font-size: 15px;
+}
+
+.menu-login a:hover {
+    background: #eff0ef;
+    color: #000000;
+}
+
+/* Đăng xuất */
+.menu-login a.logout {
+    color: #dc2626;
+}
+
+.menu-login a.logout i {
+    color: #dc2626;
+}
+
+.menu-login a.logout:hover {
+    background: #fef2f2;
+}
+.menu-login form {
+    margin: 0;
+}
+
+.menu-login button.logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 10px;
+    border: none;
+    background: transparent;
+    color: #dc2626;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 7px;
+    text-align: left;
+}
+
+.menu-login button.logout i {
+    width: 18px;
+    color: #dc2626;
+}
+
+.menu-login button.logout:hover {
+    background: #fef2f2;
 }
 
 /* CSS aside */
@@ -145,7 +242,7 @@ aside {
     left: 0;
     width: var(--sidebar-width);
     height: 100vh;
-    background-color: #292929;
+    background-color: #171717;
     color: white;
     transition: transform 0.3s ease;
     z-index: 1001;
@@ -159,34 +256,88 @@ aside {
     height: auto;
     margin: 10px;
 }
+/* SIDEBAR MENU */
 .menu-aside {
-    height: auto;
-    margin: 10px;
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background: #171717;
+    padding: 20px 15px;
+    color: #fff;
 }
+
+/* Danh sách */
 .menu-aside ul {
     list-style: none;
-    width: 100%;
-    height: auto;
+    padding: 0;
+    margin: 0;
 }
+
+/* Từng mục */
 .menu-aside ul li {
-    width: 100%;
-    height: 50px;
-    padding: 15px;
+    margin-bottom: 8px;
+}
+
+/* Link menu */
+.menu-aside ul li a {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    box-sizing: border-box;
+    justify-content: space-between;
+    padding: 13px 15px;
+    text-decoration: none;
+    color: #e5e5e5;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.25s ease;
 }
-.menu-aside ul li:hover {
-    background-color: #818181;
+
+/* Nội dung bên trong */
+.menu-aside ul li a p {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 0;
 }
-.fa-solid {
-    font-size: 20px;
-    color: #fbfcfb;
-    margin-right: 10px;
+
+/* Icon */
+.menu-aside ul li a p i {
+    width: 22px;
+    font-size: 17px;
+    text-align: center;
+    color: #fff;
 }
-.fa-angle-down {
-    font-size: 13px;
+
+/* Icon mũi tên */
+.menu-aside ul li a > i {
+    font-size: 12px;
+    color: #aaa;
+    transition: transform 0.25s ease;
+}
+
+/* Hover */
+.menu-aside ul li a:hover {
+    background: #303030;
+    color: #fff;
+}
+
+/* Menu đang active */
+.menu-aside ul li a.active {
+    background: #fff;
+    color: #171717;
+    font-weight: 600;
+}
+
+.menu-aside ul li a.active p i {
+    color: #171717;
+}
+
+.menu-aside ul li a.active > i {
+    color: #171717;
+}
+
+/* Hover trên menu active */
+.menu-aside ul li a.active:hover {
+    background: #eaeaea;
+    color: #171717;
 }
 /* 
 css main content */
@@ -609,17 +760,6 @@ css main content */
     padding: 6px 12px;
 }
 
-.box-modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    
-    width: 400px;
-    padding: 25px;
-    background: white;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-    
-}
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -814,5 +954,222 @@ css main content */
     .form-row {
         flex-direction: column;
         gap: 0;
+    }
+}
+
+/* Lớp nền modal */
+.modal-delete {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+}
+
+/* Hiển thị modal */
+.modal-delete.active {
+    display: flex;
+}
+
+/* Nội dung modal */
+.modal-delete-content {
+    width: 420px;
+    max-width: calc(100% - 30px);
+    background: #fff;
+
+    padding: 30px;
+    border-radius: 12px;
+
+    text-align: center;
+
+    animation: modalShow 0.25s ease;
+}
+
+/* Icon xóa */
+.delete-icon {
+    width: 65px;
+    height: 65px;
+
+    background: #fee2e2;
+    color: #dc2626;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+    font-size: 25px;
+}
+
+.modal-delete-content h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.modal-delete-content p {
+    color: #64748b;
+    font-size: 14px;
+}
+
+.modal-delete-content strong {
+    color: #1e293b;
+}
+
+.delete-warning {
+    display: block;
+    color: #dc2626;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+/* Nhóm nút */
+.modal-delete-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.modal-delete-actions button {
+    padding: 10px 18px;
+    border-radius: 7px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+/* Nút hủy */
+#btnCancel {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+#btnCancel:hover {
+    background: #e2e8f0;
+}
+
+/* Nút xác nhận */
+.btn-confirm-delete {
+    background: #dc2626;
+    color: white;
+}
+
+.btn-confirm-delete:hover {
+    background: #b91c1c;
+}
+
+/* Animation */
+@keyframes modalShow {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* Toast thông báo */
+.toast-message {
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    width: 350px;
+    max-width: calc(100% - 30px);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.12);
+    z-index: 10000;
+    animation: toastShow 0.4s ease forwards;
+}
+
+/* Thành công */
+.toast-message.success {
+    border-left: 5px solid #16a34a;
+}
+
+.toast-message.success .toast-icon {
+    color: #16a34a;
+}
+
+/* Thất bại */
+.toast-message.error {
+    border-left: 5px solid #dc2626;
+}
+
+.toast-message.error .toast-icon {
+    color: #dc2626;
+}
+
+.toast-icon {
+    font-size: 25px;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-content strong {
+    display: block;
+    font-size: 14px;
+    color: #1e293b;
+}
+
+.toast-content p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.toast-close {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 17px;
+}
+
+.toast-close:hover {
+    color: #1e293b;
+}
+
+/* Hiệu ứng xuất hiện */
+@keyframes toastShow {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Hiệu ứng biến mất */
+.toast-message.hide {
+    animation: toastHide 0.4s ease forwards;
+}
+
+@keyframes toastHide {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(100%);
     }
 }

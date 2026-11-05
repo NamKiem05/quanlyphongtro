@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use App\Exports\TenantsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TenantController extends Controller
 {
@@ -34,6 +37,8 @@ class TenantController extends Controller
 
         return view('admin.tenants.index', compact('tenants'));
     }
+
+
     public function store(Request $request)
     {
         // 1. Kiểm tra dữ liệu
@@ -95,5 +100,42 @@ class TenantController extends Controller
         return redirect()
             ->route('tenants.index')
             ->with('success', 'Cập nhật người thuê thành công!');
+    }
+
+    // Xóa người khách
+    public function delete(Tenant $tenant)
+    {
+        // Kiểm tra người thuê có hợp đồng hay không
+        if ($tenant->contractTenants()->exists()) {
+
+            return redirect()
+                ->route('tenants.index')
+                ->with('error', 'Không thể xóa người thuê đã có hợp đồng!');
+        }
+
+        // Xóa ảnh CCCD nếu có
+        if ($tenant->identity_front) {
+            Storage::disk('public')->delete($tenant->identity_front);
+        }
+
+        if ($tenant->identity_back) {
+            Storage::disk('public')->delete($tenant->identity_back);
+        }
+
+        // Xóa người thuê
+        $tenant->delete();
+
+        return redirect()
+            ->route('tenants.index')
+            ->with('success', 'Xóa người thuê thành công!');
+    }
+
+    // xuất excel
+    public function export()
+    {
+        return Excel::download(
+            new TenantsExport,
+            'danh-sach-nguoi-thue.xlsx'
+        );
     }
 }
