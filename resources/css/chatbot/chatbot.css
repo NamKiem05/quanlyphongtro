@@ -277,3 +277,31 @@
         bottom: 85px;
     }
 }
+/* Tin nhắn người dùng */
+.user-message {
+    display: flex;
+    justify-content: flex-end;
+    margin: 12px 0;
+}
+
+/* Nội dung tin nhắn */
+.user-message .message-content {
+    background: #0099ff;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 14px 14px 2px 14px;
+    max-width: 75%;
+    word-wrap: break-word;
+}
+.user-message .message-content p{
+    color: white;
+}
+
+/* Thời gian */
+.user-message .message-content span {
+    display: block;
+    color: #DBEAFE;
+    font-size: 11px;
+    text-align: right;
+    margin-top: 5px;
+}

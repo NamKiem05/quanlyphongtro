@@ -1,6 +1,8 @@
 
 @import './admin.css';
 @import './chatbot/chatbot.css';
+@import './tenants/tenants.css';
+@import './room/room.css';
 
 @tailwind base;
 @tailwind components;

@@ -4,6 +4,8 @@ use App\Http\Controllers\Admin\TenantController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\Admin\RoomController;
 
 Route::get('/', function () {
     return view('/auth/login');
@@ -25,6 +27,17 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     // xuất excel
     Route::get('/tenants/export', [TenantController::class, 'export'])
         ->name('tenants.export');
+    Route::post('/chatbot/send', [ChatbotController::class, 'send'])
+        ->middleware('auth')
+        ->name('chatbot.send');
+
+    // quản lý phòng
+    Route::get('/rooms', [RoomController::class, 'index'])
+        ->name('rooms.index');
+    Route::post('/rooms', [RoomController::class, 'store'])
+        ->name('rooms.store');
+    Route::get('/rooms/{room}/detail', [RoomController::class, 'detail'])
+        ->name('rooms.detail');
 });
 
 // Khu vực Client

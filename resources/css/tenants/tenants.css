@@ -1,0 +1,824 @@
+/* =========================================================
+   Trang Quản lý người thuê phòng
+   Tất cả được gói trong .tenant-page để không ảnh hưởng trang khác
+   ========================================================= */
+.main {
+    margin-top: var(--header-height);
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+    min-height: calc(100vh - var(--header-height));
+    position: relative;
+    z-index: 1;
+    transition: 0.3s;
+}
+.main.active {
+    margin: var(--header-height) 20px;
+}
+
+.tenant-page {
+    --c-text: #111827;
+    --c-muted: #6b7280;
+    --c-line: #e5e7eb;
+    --c-soft: #f9fafb;
+    --c-card: #ffffff;
+    --c-primary: #111827;
+    --radius: 14px;
+    --shadow:
+        0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 20px rgba(16, 24, 40, 0.06);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--c-text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+}
+.tenant-page *,
+.tenant-page *::before,
+.tenant-page *::after {
+    box-sizing: border-box;
+}
+
+/* ---------- Tiêu đề ---------- */
+.header-title{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px ;
+}
+.tenant-page .page-title {
+    margin: 0 0 4px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+.tenant-page .page-subtitle {
+    margin: 0;
+    color: var(--c-muted);
+    font-size: 15px;
+}
+.tenant-page .page-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--c-card);
+    border: 1px solid var(--c-line);
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-size: 14px;
+    color: var(--c-muted);
+    box-shadow: var(--shadow);
+}
+.tenant-page .page-stat i {
+    color: var(--c-text);
+}
+.tenant-page .page-stat b {
+    color: var(--c-text);
+    font-size: 16px;
+}
+
+/* ---------- Thẻ (card) ---------- */
+.tenant-page .filter-container,
+.tenant-page .main-content {
+    background: var(--c-card);
+    border: 1px solid var(--c-line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.tenant-page .filter-container {
+    padding: 20px 22px;
+}
+
+/* ---------- Bộ lọc ---------- */
+.tenant-page .filter-form {
+    display: grid;
+    grid-template-columns: minmax(240px, 2fr) repeat(2, minmax(160px, 1fr)) auto;
+    gap: 16px;
+    align-items: end;
+}
+.tenant-page .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+.tenant-page .filter-group label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-muted);
+}
+
+.tenant-page .input-search {
+    position: relative;
+}
+.tenant-page .input-search i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--c-muted);
+    font-size: 14px;
+    pointer-events: none;
+}
+.tenant-page .input-search input {
+    padding-left: 40px;
+}
+
+.tenant-page .filter-group input,
+.tenant-page .filter-group select {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid var(--c-line);
+    border-radius: 10px;
+    background: #fff;
+    color: var(--c-text);
+    font: inherit;
+    font-size: 15px;
+    transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
+}
+.tenant-page .filter-group select {
+    cursor: pointer;
+}
+.tenant-page .filter-group input:focus,
+.tenant-page .filter-group select:focus {
+    outline: none;
+    border-color: var(--c-primary);
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.12);
+}
+
+.tenant-page .filter-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ---------- Nút chung ---------- */
+.tenant-page .btn-filter,
+.tenant-page .btn-reset,
+.tenant-page .btn-add-property,
+.tenant-page .btn-exe,
+.tenant-page .btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background 0.15s,
+        border-color 0.15s,
+        transform 0.1s,
+        box-shadow 0.15s;
+}
+.tenant-page .btn-filter:active,
+.tenant-page .btn-add-property:active {
+    transform: translateY(1px);
+}
+
+.tenant-page .btn-filter,
+.tenant-page .btn-add-property {
+    background: #016fff;
+    color: #fff;
+}
+.tenant-page .btn-filter:hover,
+.tenant-page .btn-add-property:hover {
+    background: #37557c;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.tenant-page .btn-reset {
+    background: #fff;
+    color: var(--c-text);
+    border-color: var(--c-line);
+}
+.tenant-page .btn-reset:hover {
+    background: var(--c-soft);
+    border-color: #cfd4dc;
+}
+.tenant-page .btn-reset.is-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.tenant-page .btn-exe {
+    background: #ecfdf3;
+    color: #067647;
+    border-color: #abefc6;
+}
+.tenant-page .btn-exe:hover {
+    background: #d1fadf;
+}
+.tenant-page .btn-pdf {
+    background: #fef3f2;
+    color: #b42318;
+    border-color: #fecdca;
+}
+.tenant-page .btn-pdf:hover {
+    background: #fee4e2;
+}
+
+.tenant-page button:focus-visible,
+.tenant-page a:focus-visible {
+    outline: 2px solid var(--c-primary);
+    outline-offset: 2px;
+}
+
+/* ---------- Khối danh sách ---------- */
+.tenant-page .main-content {
+    overflow: hidden;
+}
+.tenant-page .box-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 18px 22px;
+    border-bottom: 1px solid var(--c-line);
+}
+.tenant-page .box-btn .btn-add-property {
+    margin-right: auto;
+}
+
+.tenant-page .table-wrap {
+    overflow-x: auto;
+}
+.tenant-page .tenant-table {
+    width: 100%;
+    min-width: 980px;
+    border-collapse: collapse;
+    font-size: 14.5px;
+}
+
+.tenant-page .tenant-table thead th {
+    background: var(--c-soft);
+    color: var(--c-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    text-align: left;
+    padding: 14px 18px;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--c-line);
+}
+.tenant-table .col-actions {
+    text-align: right;
+}
+.tenant-page .tenant-table tbody td {
+    padding: 14px 18px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f1f3;
+}
+.tenant-page .tenant-table tbody tr {
+    transition: background 0.12s;
+}
+.tenant-page .tenant-table tbody tr:hover {
+    background: #fafafb;
+}
+.tenant-page .tenant-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.tenant-page .col-index {
+    width: 64px;
+    color: var(--c-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.tenant-page .text-muted-cell {
+    color: var(--c-muted);
+}
+.tenant-page .mono {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.3px;
+}
+
+/* ---------- Tên + avatar ---------- */
+.tenant-page .tenant-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.tenant-page .tenant-name b {
+    font-weight: 600;
+}
+.tenant-page .avatar {
+    width: 38px;
+    height: 38px;
+    flex: none;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(135deg, #374151, #111827);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/* ---------- Badge giới tính ---------- */
+.tenant-page .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 600;
+}
+.tenant-page .badge-male {
+    background: #eff8ff;
+    color: #175cd3;
+}
+.tenant-page .badge-female {
+    background: #fdf2fa;
+    color: #c11574;
+}
+.tenant-page .badge-other {
+    background: #f2f4f7;
+    color: #475467;
+}
+
+/* ---------- Nút hành động ---------- */
+
+.tenant-page .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    white-space: nowrap;
+}
+.tenant-page .btn-show,
+.tenant-page .btn-edit,
+.tenant-page .btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        background 0.15s,
+        transform 0.1s;
+}
+.tenant-page .btn-show {
+    background: #eff8ff;
+    color: #175cd3;
+}
+.tenant-page .btn-show:hover {
+    background: #d1e9ff;
+}
+.tenant-page .btn-edit {
+    background: #fffaeb;
+    color: #b54708;
+}
+.tenant-page .btn-edit:hover {
+    background: #fef0c7;
+}
+.tenant-page .btn-delete {
+    background: #fef3f2;
+    color: #b42318;
+}
+.tenant-page .btn-delete:hover {
+    background: #fee4e2;
+}
+.tenant-page .btn-show:active,
+.tenant-page .btn-edit:active,
+.tenant-page .btn-delete:active {
+    transform: translateY(1px);
+}
+
+/* ---------- Trạng thái trống ---------- */
+.tenant-page .empty-state {
+    text-align: center;
+    padding: 56px 16px;
+    color: var(--c-muted);
+}
+.tenant-page .empty-state i {
+    font-size: 42px;
+    margin-bottom: 14px;
+    opacity: 0.6;
+}
+.tenant-page .empty-title {
+    margin: 0 0 4px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--c-text);
+}
+.tenant-page .empty-desc {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* ---------- Chân bảng / phân trang ---------- */
+.tenant-page .table-footer {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding: 14px 22px;
+    border-top: 1px solid var(--c-line);
+    background: var(--c-soft);
+}
+.tenant-page .result-info {
+    font-size: 14px;
+    color: var(--c-muted);
+}
+.list-links-tenants .pagination {
+    margin: 10px;
+    gap: 6px;
+}
+.list-links-tenants .pagination {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap;
+    margin-bottom: 0;
+}
+
+.list-links-tenants .page-item {
+    display: inline-block;
+}
+.table-footer .page-link {
+    min-width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #334155;
+    background: #fff;
+    border: 0.5px solid #334155;
+    border-radius: 8px !important;
+    box-shadow: none;
+}
+
+.table-footer .page-link:hover {
+    color: var(--rp-primary);
+    background: #eefaf3;
+    border-color: #b9ebcd;
+}
+.table-footer .page-item.active .page-link {
+    color: #fff;
+    background: #334155;
+    border-color: #334155;
+}
+
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1100px) {
+    .tenant-page .filter-form {
+        grid-template-columns: 1fr 1fr;
+    }
+    .tenant-page .search-group {
+        grid-column: 1 / -1;
+    }
+    .tenant-page .filter-actions {
+        grid-column: 1 / -1;
+    }
+}
+@media (max-width: 600px) {
+    .tenant-page .filter-form {
+        grid-template-columns: 1fr;
+    }
+    .tenant-page .page-title {
+        font-size: 22px;
+    }
+    .tenant-page .box-btn .btn-add-property {
+        margin-right: 0;
+        width: 100%;
+    }
+    .tenant-page .box-btn .btn-exe,
+    .tenant-page .box-btn .btn-pdf {
+        flex: 1;
+    }
+    .tenant-page .filter-actions > * {
+        flex: 1;
+    }
+}
+
+/* ============================================
+   TENANT MODAL – CSS
+   ============================================ */
+:root {
+    --primary: #0066ff;
+    --primary-hover: #008cff;
+    --primary-soft: #eef2ff;
+    --danger: #ef4444;
+    --text: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --bg-input: #f8fafc;
+    --radius: 12px;
+}
+
+/* ---------- Overlay ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+}
+
+/* Thêm class "active" bằng JS để mở modal */
+.modal-overlay.active,
+.modal-overlay.show {
+    display: flex;
+}
+
+/* ---------- Box ---------- */
+.box-modal {
+    width: 100%;
+    max-width: 640px;
+    max-height: 92vh;
+    overflow-y: auto;
+    padding: 28px 32px;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.35);
+}
+
+.box-modal::-webkit-scrollbar {
+    width: 6px;
+}
+.box-modal::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* ---------- Header ---------- */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.modal-header h3 {
+    margin: 0 0 4px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.modal-header p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* ---------- Form ---------- */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+    flex: 1;
+}
+
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+
+.form-group > label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.form-group > label span {
+    color: var(--danger);
+    margin-left: 2px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg-input);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    outline: none;
+    transition:
+        border-color 0.2s,
+        box-shadow 0.2s,
+        background 0.2s;
+    box-sizing: border-box;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #94a3b8;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #cbd5e1;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    background: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.329);
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    padding-right: 38px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+}
+
+.form-group textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* ---------- Upload CCCD ---------- */
+.cccd-upload {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.upload-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.upload-item > span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted);
+}
+
+.upload-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    color: var(--primary);
+    font-size: 24px;
+    background: var(--primary-soft);
+    border: 2px dashed #c7d2fe;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.upload-box:hover {
+    background: #e0e7ff;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.upload-box img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: #fff;
+}
+
+/* Ẩn ảnh khi chưa chọn file */
+.upload-box img[src=""],
+.upload-box img:not([src]) {
+    display: none;
+}
+
+/* ---------- Buttons ---------- */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.btn-close-modal,
+.btn-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 24px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-close-modal {
+    color: var(--text-muted);
+    background: #f1f5f9;
+}
+
+.btn-close-modal:hover {
+    color: var(--text);
+    background: #e2e8f0;
+}
+
+.btn-submit {
+    color: #fff;
+    background: rgb(2, 179, 2);
+    box-shadow: 0 6px 16px -4px rgba(2, 255, 57, 0.5);
+}
+
+.btn-submit:hover {
+    background: rgb(2, 179, 2);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px -4px rgba(60, 255, 0, 0.55);
+}
+
+.btn-submit:active,
+.btn-close-modal:active {
+    transform: scale(0.97);
+}
+
+/* ---------- Animation ---------- */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+    .box-modal {
+        padding: 20px;
+        border-radius: 14px;
+    }
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    .modal-actions {
+        flex-direction: column-reverse;
+    }
+    .btn-close-modal,
+    .btn-submit {
+        width: 100%;
+    }
+}
