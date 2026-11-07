@@ -15,7 +15,9 @@
                     </span>
                 </a>
             </li>
-            @php $roomActive = request()->routeIs('rooms.*'); @endphp
+            @php
+            $roomActive = request()->routeIs('rooms.*');
+            @endphp
             <li class="menu-item has-sub {{ $roomActive ? 'open' : '' }}">
                 <a href="" class="menu-link {{ $roomActive ? 'active' : '' }}" aria-expanded="{{ $roomActive ? 'true' : 'false' }}">
                     <span class="menu-label">
@@ -29,17 +31,19 @@
                     <li><a href="#">Danh sách phòng</a></li>
                 </ul>
             </li>
-
-            <li class="menu-item has-sub">
-                <a href="#" class="menu-link" aria-expanded="false">
+            @php
+            $contractActive = request()->routeIs('contracts.*');
+            @endphp
+            <li class="menu-item has-sub {{ $contractActive ? 'open' : '' }}">
+                <a href="#" class="menu-link {{ $contractActive ? 'active' : '' }}" aria-expanded="{{ $roomActive ? 'true' : 'false' }}">
                     <span class="menu-label">
                         <i class="fa-solid fa-cart-arrow-down"></i>
-                        <span>Đơn hàng</span>
+                        <span>Quản lý hợp đồng</span>
                     </span>
                     <i class="fa-solid fa-angle-down arrow"></i>
                 </a>
                 <ul class="submenu">
-                    <li><a href="#">Tất cả đơn hàng</a></li>
+                    <li><a href="{{ route('contracts.index') }}">Danh sách hợp đồng</a></li>
                     <li><a href="#">Đơn chờ xử lý</a></li>
                 </ul>
             </li>

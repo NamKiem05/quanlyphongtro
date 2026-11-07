@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\ContractController;
 
 Route::get('/', function () {
     return view('/auth/login');
@@ -38,6 +39,16 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ->name('rooms.store');
     Route::get('/rooms/{room}/detail', [RoomController::class, 'detail'])
         ->name('rooms.detail');
+    Route::put('/rooms/{room}', [RoomController::class, 'update'])
+        ->name('rooms.update');
+    Route::delete('/rooms/destroy/{room}', [RoomController::class, 'delete'])
+        ->name('rooms.destroy');
+        
+    //Quản lý hợp đồng
+    Route::get('/contracts', [ContractController::class, 'index'])
+        ->name('contracts.index');
+    Route::get('/contracts/{contract}', [ContractController::class, 'show'])
+        ->name('contracts.show');
 });
 
 // Khu vực Client

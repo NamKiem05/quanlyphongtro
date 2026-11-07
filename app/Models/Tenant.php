@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Tenant extends Model
 {
@@ -23,5 +24,15 @@ class Tenant extends Model
     public function contractTenants(): HasMany
     {
         return $this->hasMany(ContractTenant::class);
+    }
+
+
+    public function contracts(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Contract::class,
+            'contract_tenants'
+        )->withPivot('is_representative')
+            ->withTimestamps();
     }
 }

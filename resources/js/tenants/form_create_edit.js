@@ -29,7 +29,7 @@ function closeModal() {
 }
 
 // Xử lý chế độ Thêm
-document.getElementById("btnAddTenant").addEventListener("click", function () {
+document.getElementById("btnAddTenant")?.addEventListener("click", function () {
     form.reset();
 
     form.action = "/admin/tenants";
@@ -49,7 +49,7 @@ document.getElementById("btnAddTenant").addEventListener("click", function () {
 
 // Xử lý chế độ Xem và Sửa
 document.querySelectorAll(".js-tenant-action").forEach(function (btn) {
-    btn.addEventListener("click", function () {
+    btn?.addEventListener("click", function () {
         const mode = this.dataset.mode;
 
         // Đổ dữ liệu vào các input
@@ -86,9 +86,9 @@ document.querySelectorAll(".js-tenant-action").forEach(function (btn) {
 });
 
 // Đóng Modal
-document.getElementById("cancelModal").addEventListener("click", closeModal);
+document.getElementById("cancelModal")?.addEventListener("click", closeModal);
 
-modal.addEventListener("click", function (e) {
+modal?.addEventListener("click", function (e) {
     if (e.target === modal) {
         closeModal();
     }
@@ -100,7 +100,7 @@ function previewImage(inputId, previewId) {
     const input = document.getElementById(inputId);
     const preview = document.getElementById(previewId);
 
-    input.addEventListener("change", function () {
+    input?.addEventListener("change", function () {
         const file = this.files[0];
 
         if (file) {

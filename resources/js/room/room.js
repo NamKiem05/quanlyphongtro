@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
             available: "Còn trống",
             occupied: "Đang thuê",
             maintenance: "Đang bảo trì",
+            inactive : "Dừng hoạt động"
         };
 
         return statuses[status] || status;
@@ -95,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             room.name || "—";
 
         document.getElementById("detailRoomFloor").textContent =
-            room.floor || "—";
+            "Tầng " + room.floor || "—";
 
         document.getElementById("detailRoomArea").textContent = room.area
             ? room.area + " m²"
@@ -383,6 +384,266 @@ document.addEventListener("DOMContentLoaded", function () {
             <i class="fa-solid fa-plus"></i>
             <span>Thêm phòng</span>
         `;
+        }
+    });
+
+    // ========================================
+    // CHỈNH SỬA PHÒNG
+    // ========================================
+
+    const editModal = document.getElementById("editRoomModal");
+    const editForm = document.getElementById("editRoomForm");
+    const updateButton = document.getElementById("btnUpdateRoom");
+    const editError = document.getElementById("editRoomError");
+
+    // Các input trong modal
+    const editRoomName = document.getElementById("editRoomName");
+    const editRoomFloor = document.getElementById("editRoomFloor");
+    const editRoomArea = document.getElementById("editRoomArea");
+    const editRoomPrice = document.getElementById("editRoomPrice");
+    const editRoomStatus = document.getElementById("editRoomStatus");
+    const editRoomDescription = document.getElementById("editRoomDescription");
+
+    // 1. Xóa lỗi validation
+    function clearEditRoomErrors() {
+        editForm.querySelectorAll(".field-error").forEach((element) => {
+            element.textContent = "";
+        });
+
+        editForm.querySelectorAll(".is-invalid").forEach((element) => {
+            element.classList.remove("is-invalid");
+        });
+    }
+
+    // 2. Hiển thị lỗi validation
+    function showEditRoomErrors(errors) {
+        clearEditRoomErrors();
+
+        Object.entries(errors).forEach(([field, messages]) => {
+            const input = editForm.querySelector(`[name="${field}"]`);
+
+            const errorElement = editForm.querySelector(
+                `[data-error="${field}"]`,
+            );
+
+            if (input) {
+                input.classList.add("is-invalid");
+            }
+
+            if (errorElement) {
+                errorElement.textContent = messages[0];
+            }
+        });
+    }
+
+    // 3. Mở modal chỉnh sửa
+    function openEditRoomModal() {
+        editModal.classList.add("active");
+        document.body.classList.add("room-modal-open");
+    }
+
+    // 4. Đóng modal chỉnh sửa
+    function closeEditRoomModal() {
+        editModal.classList.remove("active");
+        document.body.classList.remove("room-modal-open");
+    }
+
+    // 5. Đóng modal bằng các nút đóng
+    editModal.querySelectorAll("[data-edit-room-close]").forEach((button) => {
+        button.addEventListener("click", closeEditRoomModal);
+    });
+
+    // 6. Lấy thông tin phòng và hiển thị vào modal
+    async function loadRoomForEdit(button) {
+        const detailUrl = button.dataset.detailUrl;
+        const updateUrl = button.dataset.updateUrl;
+
+        clearEditRoomErrors();
+
+        editError.classList.add("d-none");
+
+        // Reset form trước khi đổ dữ liệu mới
+        editForm.reset();
+
+        openEditRoomModal();
+
+        updateButton.disabled = true;
+        updateButton.innerHTML = `
+        <span class="spinner-border spinner-border-sm"></span>
+        Đang tải...
+    `;
+
+        try {
+            const response = await fetch(detailUrl, {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(
+                    result.message || "Không thể lấy thông tin phòng.",
+                );
+            }
+
+            const room = result.data;
+
+            // Đổ dữ liệu vào các input
+            editRoomName.value = room.name ?? "";
+            editRoomFloor.value = room.floor ?? "";
+            editRoomArea.value = room.area ?? "";
+            editRoomPrice.value = room.rent_price ?? "";
+            editRoomStatus.value = room.status ?? "available";
+            editRoomDescription.value = room.description ?? "";
+
+            // Gán URL cập nhật cho form
+            editForm.dataset.url = updateUrl;
+        } catch (error) {
+            console.error("Lỗi lấy thông tin phòng:", error);
+
+            editError.textContent = error.message;
+            editError.classList.remove("d-none");
+        } finally {
+            updateButton.disabled = false;
+            updateButton.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Lưu thay đổi</span>
+        `;
+        }
+    }
+
+    // 7. Bắt sự kiện nhấn nút chỉnh sửa
+    document.addEventListener("click", function (event) {
+        const button = event.target.closest(".btn-edit-room");
+
+        if (!button) return;
+
+        loadRoomForEdit(button);
+    });
+
+    // 8. Gửi form cập nhật phòng
+    editForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        clearEditRoomErrors();
+        editError.classList.add("d-none");
+
+        const formData = new FormData(editForm);
+        const url = editForm.dataset.url;
+
+        if (!url) {
+            editError.textContent = "Không tìm thấy đường dẫn cập nhật phòng.";
+            editError.classList.remove("d-none");
+            return;
+        }
+
+        updateButton.disabled = true;
+
+        updateButton.innerHTML = `
+        <span class="spinner-border spinner-border-sm"></span>
+        Đang cập nhật...
+    `;
+
+        try {
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+                body: formData,
+            });
+
+            const result = await response.json();
+
+            // Lỗi validation
+            if (response.status === 422) {
+                showEditRoomErrors(result.errors || {});
+                return;
+            }
+
+            // Lỗi server
+            if (!response.ok) {
+                throw new Error(result.message || "Không thể cập nhật phòng.");
+            }
+
+            if (!result.success) {
+                throw new Error(result.message || "Cập nhật phòng thất bại.");
+            }
+
+            // Thành công
+            closeEditRoomModal();
+
+            alert(result.message || "Cập nhật phòng thành công!");
+
+            // Tải lại danh sách phòng
+            window.location.reload();
+        } catch (error) {
+            console.error("Lỗi cập nhật phòng:", error);
+
+            editError.textContent = error.message;
+            editError.classList.remove("d-none");
+        } finally {
+            updateButton.disabled = false;
+
+            updateButton.innerHTML = `
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>Lưu thay đổi</span>
+        `;
+        }
+    });
+
+    // modal xóa
+    
+    // 1. Lấy các phần tử HTML
+    const deleteRoomModal = document.getElementById("deleteModal");
+    const deleteRoomForm = document.getElementById("deleteForm");
+    const deleteRoomName = document.getElementById("deleteItemName");
+
+    const btnCancelDeleteRoom = document.getElementById("btnCancel");
+    const btnCloseDeleteRoom = document.getElementById("btnCloseDeleteModal");
+    const deleteRoomButtons = document.querySelectorAll(".btn-delete-room");
+
+    // 2. Mở modal khi nhấn nút xóa
+    deleteRoomButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            // Lấy URL và tên phòng
+            const url = this.dataset.url;
+            const name = this.dataset.name;
+
+            // Gán URL vào form
+            deleteRoomForm.action = url;
+
+            // Hiển thị tên phòng
+            deleteRoomName.textContent = name;
+
+            // Mở modal
+            deleteRoomModal.classList.add("active");
+        });
+    });
+
+    // 3. Hàm đóng modal
+    function closeDeleteRoomModal() {
+        deleteRoomModal.classList.remove("active");
+    }
+
+    // 4. Đóng modal khi nhấn Hủy
+    btnCancelDeleteRoom.addEventListener("click", closeDeleteRoomModal);
+
+    // 5. Đóng modal khi nhấn nút X
+    btnCloseDeleteRoom.addEventListener("click", closeDeleteRoomModal);
+
+    // 6. Đóng modal khi nhấn lớp nền tối
+    deleteRoomModal.addEventListener("click", function (event) {
+        if (
+            event.target === deleteRoomModal ||
+            event.target.classList.contains("delete-modal-overlay")
+        ) {
+            closeDeleteRoomModal();
         }
     });
 });

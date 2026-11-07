@@ -14,7 +14,9 @@
 <body>
     @include('admin/layouts/partials/header_admin')
     @include('admin/layouts/partials/sidebar_admin')
+    <main class="main main-page">
     @yield('content')
+    </main>
     @include('admin/layouts/partials/chatbot')
     @include('admin/layouts/partials/toast_admin')
     

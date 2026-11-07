@@ -3,6 +3,7 @@
 @import './chatbot/chatbot.css';
 @import './tenants/tenants.css';
 @import './room/room.css';
+@import './contracts/contracts.css';
 
 @tailwind base;
 @tailwind components;

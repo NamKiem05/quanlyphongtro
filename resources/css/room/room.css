@@ -1,9 +1,8 @@
 /* =========================================================
    Trang Quản lý phòng - rooms.css
-   Scope: .tenant-page .rooms-page (không ảnh hưởng trang khác)
+   Scope:  .rooms-page (không ảnh hưởng trang khác)
    ========================================================= */
-
-.tenant-page .rooms-page {
+.rooms-page {
     --rp-primary: #0b4d6b;
     --rp-primary-dark: #084352;
     --rp-green: #1a4e9d;
@@ -21,11 +20,11 @@
 }
 
 /* ===== Tiêu đề trang ===== */
-.tenant-page .rooms-page .page-header {
+.rooms-page .page-header {
     margin-bottom: 22px;
 }
 
-.tenant-page .rooms-page .page-title {
+.rooms-page .page-title {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -36,20 +35,20 @@
     color: var(--rp-text);
 }
 
-.tenant-page .rooms-page .page-title svg {
+.rooms-page .page-title svg {
     width: 32px;
     height: 32px;
     color: var(--rp-primary);
 }
 
-.tenant-page .rooms-page .page-subtitle {
+.rooms-page .page-subtitle {
     margin: 4px 0 0;
     font-size: 0.95rem;
     color: var(--rp-muted);
 }
 
 /* ===== Card chung ===== */
-.tenant-page .rooms-page .card {
+.rooms-page .card {
     background: #fff;
     border: 1px solid var(--rp-border);
     border-radius: var(--rp-radius);
@@ -59,14 +58,14 @@
 /* ===== Thẻ thống kê ===== */
 
 /* Lưới 4 cột nằm ngang (ghi đè hệ thống cột của Bootstrap) */
-.tenant-page .rooms-page .stat-grid {
+.rooms-page .stat-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
     margin: 0 0 24px;
 }
 
-.tenant-page .rooms-page .stat-grid > * {
+.rooms-page .stat-grid > * {
     width: auto;
     max-width: none;
     margin: 0;
@@ -74,7 +73,7 @@
     flex: none;
 }
 
-.tenant-page .rooms-page .stat-card {
+.rooms-page .stat-card {
     height: 100%;
     min-width: 0;
     position: relative;
@@ -92,12 +91,12 @@
         box-shadow 0.2s ease;
 }
 
-.tenant-page .rooms-page .stat-card:hover {
+.rooms-page .stat-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.09);
 }
 
-.tenant-page .rooms-page .stat-icon {
+.rooms-page .stat-icon {
     flex: 0 0 48px;
     width: 48px;
     height: 48px;
@@ -109,19 +108,19 @@
     color: var(--accent);
 }
 
-.tenant-page .rooms-page .stat-icon svg {
+.rooms-page .stat-icon svg {
     width: 26px;
     height: 26px;
 }
 
-.tenant-page .rooms-page .stat-label {
+.rooms-page .stat-label {
     margin: 0 0 4px;
     font-size: 0.9rem;
     font-weight: 500;
     color: #475569;
 }
 
-.tenant-page .rooms-page .stat-value {
+.rooms-page .stat-value {
     margin: 0;
     font-size: 2rem;
     font-weight: 800;
@@ -130,7 +129,7 @@
 }
 
 /* Biểu đồ cột trang trí */
-.tenant-page .rooms-page .stat-bars {
+.rooms-page .stat-bars {
     display: flex;
     align-items: flex-end;
     gap: 4px;
@@ -138,7 +137,7 @@
     margin-left: auto;
 }
 
-.tenant-page .rooms-page .stat-bars span {
+.rooms-page .stat-bars span {
     display: block;
     width: 6px;
     border-radius: 2px;
@@ -146,48 +145,48 @@
     opacity: 0.28;
 }
 
-.tenant-page .rooms-page .stat-bars span:nth-child(1) {
+.rooms-page .stat-bars span:nth-child(1) {
     height: 10px;
 }
 
-.tenant-page .rooms-page .stat-bars span:nth-child(2) {
+.rooms-page .stat-bars span:nth-child(2) {
     height: 16px;
 }
 
-.tenant-page .rooms-page .stat-bars span:nth-child(3) {
+.rooms-page .stat-bars span:nth-child(3) {
     height: 23px;
 }
 
-.tenant-page .rooms-page .stat-bars span:nth-child(4) {
+.rooms-page .stat-bars span:nth-child(4) {
     height: 30px;
 }
 
-.tenant-page .rooms-page .stat-bars span:nth-child(5) {
+.rooms-page .stat-bars span:nth-child(5) {
     height: 38px;
 }
 
-.tenant-page .rooms-page .stat-total {
+.rooms-page .stat-total {
     --accent: #1a9d5c;
     --accent-soft: #eefaf3;
     --accent-border: #d6f0e1;
     --accent-icon-bg: #d9f3e5;
 }
 
-.tenant-page .rooms-page .stat-available {
+.rooms-page .stat-available {
     --accent: #16a34a;
     --accent-soft: #eefbf2;
     --accent-border: #d5f0de;
     --accent-icon-bg: #d6f2e0;
 }
 
-.tenant-page .rooms-page .stat-occupied {
+.rooms-page .stat-occupied {
     --accent: #1d4ed8;
     --accent-soft: #eff5ff;
     --accent-border: #d9e6fc;
     --accent-icon-bg: #dbe8fd;
 }
 
-.tenant-page .rooms-page .stat-maintenance {
+.rooms-page .stat-maintenance {
     --accent: #f97316;
     --accent-soft: #fff6ee;
     --accent-border: #fde3cc;
@@ -195,7 +194,7 @@
 }
 
 /* ===== Thanh tìm kiếm / lọc ===== */
-.tenant-page .rooms-page .filter-card {
+.rooms-page .filter-card {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -203,7 +202,7 @@
     padding: 16px 18px;
 }
 
-.tenant-page .rooms-page .filter-form {
+.rooms-page .filter-form {
     display: flex;
     flex: 1 1 auto;
     align-items: center;
@@ -212,26 +211,26 @@
     margin: 0;
 }
 
-.tenant-page .rooms-page .field-box {
+.rooms-page .field-box {
     position: relative;
 }
 
-.tenant-page .rooms-page .field-box.field-search {
+.rooms-page .field-box.field-search {
     flex: 0 1 270px;
     min-width: 200px;
 }
 
-.tenant-page .rooms-page .field-box.field-status {
+.rooms-page .field-box.field-status {
     flex: 0 1 205px;
     min-width: 170px;
 }
 
-.tenant-page .rooms-page .field-box.field-sort {
+.rooms-page .field-box.field-sort {
     flex: 0 1 185px;
     min-width: 160px;
 }
 
-.tenant-page .rooms-page .field-box > svg {
+.rooms-page .field-box > svg {
     position: absolute;
     left: 14px;
     top: 50%;
@@ -243,8 +242,8 @@
     z-index: 2;
 }
 
-.tenant-page .rooms-page .form-control,
-.tenant-page .rooms-page .form-select {
+.rooms-page .form-control,
+.rooms-page .form-select {
     height: 44px;
     padding-left: 42px;
     font-size: 0.92rem;
@@ -257,18 +256,18 @@
         box-shadow 0.15s ease;
 }
 
-.tenant-page .rooms-page .form-control::placeholder {
+.rooms-page .form-control::placeholder {
     color: #94a3b8;
 }
 
-.tenant-page .rooms-page .form-control:focus,
-.tenant-page .rooms-page .form-select:focus {
+.rooms-page .form-control:focus,
+.rooms-page .form-select:focus {
     border-color: var(--rp-green);
     box-shadow: 0 0 0 4px rgba(26, 157, 92, 0.13);
 }
 
-.tenant-page .rooms-page .btn-search,
-.tenant-page .rooms-page .btn-add {
+.rooms-page .btn-search,
+.rooms-page .btn-add {
     height: 44px;
     display: inline-flex;
     align-items: center;
@@ -285,50 +284,50 @@
     transition: all 0.15s ease;
 }
 
-.tenant-page .rooms-page .btn-search {
+.rooms-page .btn-search {
     background: linear-gradient(135deg, #0285ff, #082052);
 }
 
-.tenant-page .rooms-page .btn-search:hover {
+.rooms-page .btn-search:hover {
     filter: brightness(1.1);
     box-shadow: 0 6px 14px rgba(8, 82, 58, 0.28);
     color: #fff;
 }
 
-.tenant-page .rooms-page .btn-add {
+.rooms-page .btn-add {
     margin-left: auto;
     background: var(--rp-green);
 }
 
-.tenant-page .rooms-page .btn-add:hover {
+.rooms-page .btn-add:hover {
     background: var(--rp-green-dark);
     box-shadow: 0 6px 14px rgba(26, 157, 92, 0.3);
     color: #fff;
 }
 
-.tenant-page .rooms-page .btn-search svg,
-.tenant-page .rooms-page .btn-add svg {
+.rooms-page .btn-search svg,
+.rooms-page .btn-add svg {
     width: 16px;
     height: 16px;
 }
 
 /* ===== Bảng ===== */
-.tenant-page .rooms-page .list-card {
+.rooms-page .list-card {
     padding: 0;
     overflow: hidden;
 }
 
-.tenant-page .rooms-page .table-wrap {
+.rooms-page .table-wrap {
     padding: 14px 14px 0;
 }
 
-.tenant-page .rooms-page .table {
+.rooms-page .table {
     width: 100%;
     margin-bottom: 0;
     --bs-table-bg: transparent;
 }
 
-.tenant-page .rooms-page .table thead th {
+.rooms-page .table thead th {
     padding: 14px 16px;
     font-size: 0.88rem;
     font-weight: 700;
@@ -338,15 +337,15 @@
     border: 0;
 }
 
-.tenant-page .rooms-page .table thead th:first-child {
+.rooms-page .table thead th:first-child {
     border-radius: 10px 0 0 10px;
 }
 
-.tenant-page .rooms-page .table thead th:last-child {
+.rooms-page .table thead th:last-child {
     border-radius: 0 10px 10px 0;
 }
 
-.tenant-page .rooms-page .table tbody td {
+.rooms-page .table tbody td {
     padding: 13px 16px;
     font-size: 0.92rem;
     vertical-align: middle;
@@ -354,37 +353,37 @@
     text-align: center;
 }
 
-.tenant-page .rooms-page .table tbody tr:last-child td {
+.rooms-page .table tbody tr:last-child td {
     border-bottom: 0;
 }
 
-.tenant-page .rooms-page .table-hover tbody tr:hover > * {
+.rooms-page .table-hover tbody tr:hover > * {
     background: #f7fbf9;
     --bs-table-accent-bg: transparent;
 }
 
-.tenant-page .rooms-page .index-col {
+.rooms-page .index-col {
     width: 56px;
     color: #334155;
 }
 
-.tenant-page .rooms-page .room-name {
+.rooms-page .room-name {
     font-weight: 600;
 }
 
-.tenant-page .rooms-page .room-price {
+.rooms-page .room-price {
     white-space: nowrap;
     font-weight: 500;
 }
 
-.tenant-page .rooms-page .text-na {
+.rooms-page .text-na {
     font-size: 0.88rem;
     font-style: italic;
     color: #94a3b8;
 }
 
 /* ===== Badge trạng thái ===== */
-.tenant-page .rooms-page .status-badge {
+.rooms-page .status-badge {
     display: inline-flex;
     align-items: center;
     gap: 7px;
@@ -396,7 +395,7 @@
     border-radius: 999px;
 }
 
-.tenant-page .rooms-page .status-badge::before {
+.rooms-page .status-badge::before {
     content: "";
     width: 8px;
     height: 8px;
@@ -404,37 +403,42 @@
     background: currentColor;
 }
 
-.tenant-page .rooms-page .status-available {
+.rooms-page .status-available {
     color: #15803d;
     background: #e8f8ee;
     border-color: #b9ebcd;
 }
 
-.tenant-page .rooms-page .status-occupied {
+.rooms-page .status-occupied {
     color: #1d4ed8;
     background: #e8f0fe;
     border-color: #bcd1fb;
 }
 
-.tenant-page .rooms-page .status-maintenance {
+.rooms-page .status-maintenance {
     color: #c2410c;
     background: #fff1e3;
     border-color: #fcd3a8;
 }
+.rooms-page .status-inactive {
+    color: #7e7d7d;
+    background: #e9e8e8;
+    border-color: #8d8d8d;
+}
 
 /* ===== Nút thao tác ===== */
-.tenant-page .rooms-page .actions {
+.rooms-page .actions {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 6px;
 }
 
-.tenant-page .rooms-page .actions form {
+.rooms-page .actions form {
     margin: 0;
 }
 
-.tenant-page .rooms-page .btn-action {
+.rooms-page .btn-action {
     width: 32px;
     height: 30px;
     display: inline-flex;
@@ -452,51 +456,51 @@
         box-shadow 0.15s ease;
 }
 
-.tenant-page .rooms-page .btn-action svg {
+.rooms-page .btn-action svg {
     width: 15px;
     height: 15px;
 }
 
-.tenant-page .rooms-page .btn-action:hover {
+.rooms-page .btn-action:hover {
     transform: translateY(-1px);
     filter: brightness(0.93);
     box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
     color: #fff;
 }
 
-.tenant-page .rooms-page .btn-view {
+.rooms-page .btn-view {
     background: #ffaf01;
 }
 
-.tenant-page .rooms-page .btn-edit {
+.rooms-page .btn-edit {
     background: #4f8df5;
 }
 
-.tenant-page .rooms-page .btn-delete {
+.rooms-page .btn-delete {
     background: #f87171;
 }
 
 /* ===== Trạng thái trống ===== */
-.tenant-page .rooms-page .empty-state {
+.rooms-page .empty-state {
     padding: 56px 20px;
     text-align: center;
     color: var(--rp-muted);
 }
 
-.tenant-page .rooms-page .empty-state svg {
+.rooms-page .empty-state svg {
     width: 48px;
     height: 48px;
     margin-bottom: 10px;
     color: #cbd5e1;
 }
 
-.tenant-page .rooms-page .empty-state p {
+.rooms-page .empty-state p {
     margin: 0;
     font-size: 0.95rem;
 }
 
 /* ===== Chân bảng: thông tin + phân trang ===== */
-.tenant-page .rooms-page .list-footer {
+.rooms-page .list-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -504,15 +508,15 @@
     gap: 12px;
     padding: 14px 18px;
     border-top: 1px solid var(--rp-border);
-     justify-content: left;
+    justify-content: left;
 }
 
-.tenant-page .rooms-page .list-info {
+.rooms-page .list-info {
     font-size: 0.92rem;
     color: #475569;
 }
 
-.tenant-page .rooms-page .pagination {
+.rooms-page .pagination {
     margin: 0;
     gap: 6px;
 }
@@ -526,7 +530,7 @@
 .list-links .page-item {
     display: inline-block;
 }
-.tenant-page .rooms-page .page-link {
+.rooms-page .page-link {
     min-width: 38px;
     height: 38px;
     display: flex;
@@ -542,104 +546,104 @@
     box-shadow: none;
 }
 
-.tenant-page .rooms-page .page-link:hover {
+.rooms-page .page-link:hover {
     color: var(--rp-primary);
     background: #eefaf3;
     border-color: #b9ebcd;
 }
 
-.tenant-page .rooms-page .page-item.active .page-link {
+.rooms-page .page-item.active .page-link {
     color: #fff;
     background: var(--rp-primary);
     border-color: var(--rp-primary);
 }
 
-.tenant-page .rooms-page .page-item.disabled .page-link {
+.rooms-page .page-item.disabled .page-link {
     color: #cbd5e1;
     background: #fff;
 }
 
 /* ===== Responsive ===== */
 @media (max-width: 991.98px) {
-    .tenant-page .rooms-page {
+    .rooms-page {
         padding: 16px;
     }
 
-    .tenant-page .rooms-page .btn-add {
+    .rooms-page .btn-add {
         margin-left: 0;
     }
 }
 
 @media (max-width: 767.98px) {
-    .tenant-page .rooms-page .page-title {
+    .rooms-page .page-title {
         font-size: 1.4rem;
     }
 
-    .tenant-page .rooms-page .page-title svg {
+    .rooms-page .page-title svg {
         width: 26px;
         height: 26px;
     }
 
-    .tenant-page .rooms-page .field-box.field-search,
-    .tenant-page .rooms-page .field-box.field-status,
-    .tenant-page .rooms-page .field-box.field-sort {
+    .rooms-page .field-box.field-search,
+    .rooms-page .field-box.field-status,
+    .rooms-page .field-box.field-sort {
         flex: 1 1 100%;
     }
 
-    .tenant-page .rooms-page .btn-search,
-    .tenant-page .rooms-page .btn-add {
+    .rooms-page .btn-search,
+    .rooms-page .btn-add {
         flex: 1 1 100%;
     }
 
-    .tenant-page .rooms-page .table-wrap {
+    .rooms-page .table-wrap {
         padding: 10px 8px 0;
     }
 
-    .tenant-page .rooms-page .table thead th,
-    .tenant-page .rooms-page .table tbody td {
+    .rooms-page .table thead th,
+    .rooms-page .table tbody td {
         padding: 12px 10px;
     }
 }
 
 @media (max-width: 1199.98px) {
-    .tenant-page .rooms-page .stat-bars {
+    .rooms-page .stat-bars {
         display: none;
     }
 
-    .tenant-page .rooms-page .stat-card {
+    .rooms-page .stat-card {
         padding: 16px;
     }
 }
 
 @media (max-width: 767.98px) {
     /* Màn hình nhỏ mới chuyển sang 2 cột */
-    .tenant-page .rooms-page .stat-grid {
+    .rooms-page .stat-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 }
 
 @media (max-width: 575.98px) {
-    .tenant-page .rooms-page .stat-bars {
+    .rooms-page .stat-bars {
         display: none;
     }
 
-    .tenant-page .rooms-page .stat-card {
+    .rooms-page .stat-card {
         padding: 14px;
         gap: 10px;
     }
 
-    .tenant-page .rooms-page .stat-icon {
+    .rooms-page .stat-icon {
         flex-basis: 40px;
         width: 40px;
         height: 40px;
     }
 
-    .tenant-page .rooms-page .stat-value {
+    .rooms-page .stat-value {
         font-size: 1.6rem;
     }
 
-    .tenant-page .rooms-page .list-footer {
+    .rooms-page .list-footer {
         justify-content: center;
     }
 }
@@ -1475,7 +1479,7 @@ body.room-modal-open {
 }
 
 .btn-submit-room {
-    background: var(--rm-green-900);
+    background: green;
     color: #fff;
     box-shadow: 0 2px 8px rgba(20, 87, 63, 0.3);
 }
@@ -1514,5 +1518,221 @@ body.room-modal-open {
     .btn-cancel-room,
     .btn-submit-room {
         flex: 1;
+    }
+}
+
+/* ==============================
+   MODAL XÓA PHÒNG
+============================== */
+
+.delete-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+/* Khi mở modal */
+.delete-modal.active {
+    display: flex;
+}
+
+/* Lớp nền tối */
+.delete-modal-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+}
+
+/* Nội dung modal */
+.delete-modal-content {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 430px;
+
+    background: #fff;
+    border-radius: 14px;
+
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+
+    overflow: hidden;
+
+    animation: deleteModalShow 0.25s ease;
+}
+
+/* Header */
+.delete-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 22px;
+
+    border-bottom: 1px solid #eee;
+}
+
+.delete-modal-header h5 {
+    margin: 0;
+
+    font-size: 17px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.delete-modal-header button {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+
+    background: transparent;
+    color: #6b7280;
+
+    font-size: 17px;
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.delete-modal-header button:hover {
+    background: #f3f4f6;
+    color: #dc2626;
+}
+
+/* Body */
+.delete-modal-body {
+    padding: 28px 24px;
+    text-align: center;
+}
+
+.delete-icon {
+    width: 65px;
+    height: 65px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #fee2e2;
+    color: #dc2626;
+
+    font-size: 25px;
+}
+
+.delete-modal-body p {
+    margin: 0 0 12px;
+
+    font-size: 15px;
+    line-height: 1.6;
+    color: #374151;
+}
+
+.delete-modal-body strong {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+.delete-modal-body small {
+    display: block;
+
+    padding: 10px 12px;
+
+    border-radius: 8px;
+    background: #fff7ed;
+
+    color: #c2410c;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Footer */
+.delete-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+
+    padding: 16px 22px;
+
+    border-top: 1px solid #eee;
+    background: #fafafa;
+}
+
+.delete-modal-footer button {
+    min-height: 38px;
+    padding: 0 16px;
+
+    border: none;
+    border-radius: 7px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+/* Nút hủy */
+#btnCancel {
+    background: #e5e7eb;
+    color: #374151;
+}
+
+#btnCancel:hover {
+    background: #d1d5db;
+}
+
+/* Nút xác nhận */
+#deleteForm button {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+
+    background: #dc2626;
+    color: #fff;
+}
+
+#deleteForm button:hover {
+    background: #b91c1c;
+}
+
+/* Hiệu ứng mở modal */
+@keyframes deleteModalShow {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .delete-modal-content {
+        max-width: 100%;
+    }
+
+    .delete-modal-footer {
+        padding: 14px;
     }
 }

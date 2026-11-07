@@ -2,10 +2,6 @@
 
 @section('content')
 
-<style>
-
-</style>
-<main class="main tenant-page">
     <div class="container-fluid rooms-page">
 
         {{-- Tiêu đề --}}
@@ -202,8 +198,10 @@
                                     <span class="status-badge status-available">Phòng trống</span>
                                     @elseif ($room->status === 'occupied')
                                     <span class="status-badge status-occupied">Đang thuê</span>
+                                     @elseif ($room->status === 'inactive')
+                                    <span class="status-badge status-inactive">Dừng hoạt động</span>
                                     @else
-                                    <span class="status-badge status-maintenance">Bảo trì</span>
+                                    <span class="status-badge status-maintenance">Đang bảo trì</span>
                                     @endif
                                 </td>
 
@@ -215,32 +213,24 @@
                                             class="btn-action btn-view btn-room-detail"
                                             data-url="{{ route('rooms.detail', $room->id) }}"
                                             title="Xem chi tiết">
-
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
 
-                                        <a href="{{ Route::has('rooms.edit') ? route('rooms.edit', $room->id) : '#' }}"
-                                            class="btn-action btn-edit" title="Chỉnh sửa">
-                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M12 20h9" />
-                                                <path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z" />
-                                            </svg>
-                                        </a>
+                                        <button
+                                            type="button"
+                                            class="btn-action btn-edit btn-edit-room"
+                                            data-room-id="{{ $room->id }}"
+                                            data-detail-url="{{ route('rooms.detail', $room->id) }}"
+                                            data-update-url="{{ route('rooms.update', $room->id) }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                        </button>
 
-                                        <form action="{{ Route::has('rooms.destroy') ? route('rooms.destroy', $room->id) : '#' }}"
-                                            method="POST"
-                                            onsubmit="return confirm('Bạn có chắc muốn xóa phòng {{ $room->name }}?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn-action btn-delete" title="Xóa">
-                                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                                    <path d="M3 6h18" />
-                                                    <path d="M8 6V4h8v2" />
-                                                    <path d="M19 6l-1 14H6L5 6" />
-                                                    <path d="M10 11v6M14 11v6" />
-                                                </svg>
-                                            </button>
-                                        </form>
+                                        <button type="button"
+                                            class="btn-action btn-delete btn-delete-room"
+                                            data-url="{{ route('rooms.destroy', $room->id) }}"
+                                            data-name="{{ $room->name }}" title="Xóa">
+                                            <i class="fa-solid fa-trash"></i>
+                                        </button>
                                     </div>
                                 </td>
                             </tr>
@@ -284,12 +274,10 @@
             </div>
 
         </div>
-
     </div>
     @include('admin.rooms.partials.detail-modal')
     @include('admin.rooms.partials.create-modal')
-</main>
-<script>
+    @include('admin.rooms.partials.edit-modal')
+    @include('admin.rooms.partials.delete-modal')
 
-</script>
 @endsection

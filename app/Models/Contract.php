@@ -54,11 +54,8 @@ class Contract extends Model
     {
         return $this->belongsToMany(
             Tenant::class,
-            'contract_tenants',
-            'contract_id',
-            'tenant_id'
-        )
-            ->withPivot('is_representative')
+            'contract_tenants'
+        )->withPivot('is_representative')
             ->withTimestamps();
     }
 }

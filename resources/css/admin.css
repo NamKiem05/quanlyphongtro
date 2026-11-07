@@ -48,7 +48,6 @@ header {
 
 /* ---------- Header ---------- */
 
-
 .box-tag i {
     display: flex;
     align-items: center;
@@ -260,7 +259,9 @@ header {
     border: none;
     border-radius: 9px;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition:
+        background 0.2s,
+        color 0.2s;
 }
 
 .menu-login a i,
@@ -500,38 +501,73 @@ header {
 
 /* ---------- Animation ---------- */
 @keyframes pulse {
-    0%   { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5); }
-    70%  { box-shadow: 0 0 0 7px rgba(34, 197, 94, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    0% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+    }
+    70% {
+        box-shadow: 0 0 0 7px rgba(34, 197, 94, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+    }
 }
 
 @keyframes dropDown {
-    from { opacity: 0; transform: translateY(-8px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes slideUp {
-    from { opacity: 0; transform: translateY(24px) scale(0.98); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 992px) {
-    .header { margin-left: 0; padding: 0 16px; }
-    .menu-login { right: 16px; }
+    .header {
+        margin-left: 0;
+        padding: 0 16px;
+    }
+    .menu-login {
+        right: 16px;
+    }
 }
 
 @media (max-width: 600px) {
     .admin,
-    .header-login > i { display: none; }
-    .header-login { padding: 4px; }
-    .box-header { gap: 12px; }
-    .profile-modal { padding: 20px; }
+    .header-login > i {
+        display: none;
+    }
+    .header-login {
+        padding: 4px;
+    }
+    .box-header {
+        gap: 12px;
+    }
+    .profile-modal {
+        padding: 20px;
+    }
 }
 /* CSS aside */
 aside {
@@ -569,7 +605,11 @@ aside {
     height: 100vh;
     display: flex;
     flex-direction: column;
-    background: linear-gradient(180deg, var(--blue-800) 0%, var(--blue-900) 100%);
+    background: linear-gradient(
+        180deg,
+        var(--blue-800) 0%,
+        var(--blue-900) 100%
+    );
     color: var(--blue-100);
     box-shadow: 4px 0 24px rgba(30, 58, 138, 0.25);
     z-index: 100;
@@ -638,7 +678,10 @@ aside {
     text-decoration: none;
     font-size: 14.5px;
     font-weight: 500;
-    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+    transition:
+        background 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
 }
 
 .menu-label {
@@ -730,6 +773,46 @@ aside {
     .sidebar.show {
         transform: translateX(0);
     }
+}
+.main {
+    margin-top: var(--header-height);
+    margin-left: var(--sidebar-width);
+    padding: 20px;
+    min-height: calc(100vh - var(--header-height));
+    position: relative;
+    z-index: 1;
+    transition: 0.3s;
+}
+.main.active {
+    margin: var(--header-height) 20px;
+}
+.main-page {
+    --c-text: #111827;
+    --c-muted: #6b7280;
+    --c-line: #e5e7eb;
+    --c-soft: #f9fafb;
+    --c-card: #ffffff;
+    --c-primary: #111827;
+    --radius: 14px;
+    --shadow:
+        0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 20px rgba(16, 24, 40, 0.06);
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--c-text);
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        "Segoe UI",
+        Roboto,
+        sans-serif;
+}
+.main-page *,
+.main-page *::before,
+.main-page *::after {
+    box-sizing: border-box;
 }
 
 /* Lớp nền modal */

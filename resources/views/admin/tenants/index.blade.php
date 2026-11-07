@@ -11,7 +11,7 @@ $sorts = [
 $hasFilter = request()->filled('keyword') || request()->filled('gender') || request('sort', 'newest') !== 'newest';
 @endphp
 
-<main class="main tenant-page">
+
     {{-- ===== Bộ lọc ===== --}}
     <section class="filter-container">
         <div class="header-title">

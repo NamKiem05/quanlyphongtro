@@ -32,7 +32,7 @@ return new class extends Migration
                 'terminated'
             ])->default('draft');
 
-            $table->date('signed_at')->nullable();
+            $table->dateTime('signed_at')->nullable();
             $table->string('pdf_path')->nullable();
             $table->string('signed_pdf_path')->nullable();
             $table->text('terms')->nullable();

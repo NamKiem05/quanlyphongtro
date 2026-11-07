@@ -1,48 +1,8 @@
 /* =========================================================
    Trang Quản lý người thuê phòng
-   Tất cả được gói trong .tenant-page để không ảnh hưởng trang khác
+   Tất cả được gói trong  để không ảnh hưởng trang khác
    ========================================================= */
-.main {
-    margin-top: var(--header-height);
-    margin-left: var(--sidebar-width);
-    padding: 20px;
-    min-height: calc(100vh - var(--header-height));
-    position: relative;
-    z-index: 1;
-    transition: 0.3s;
-}
-.main.active {
-    margin: var(--header-height) 20px;
-}
 
-.tenant-page {
-    --c-text: #111827;
-    --c-muted: #6b7280;
-    --c-line: #e5e7eb;
-    --c-soft: #f9fafb;
-    --c-card: #ffffff;
-    --c-primary: #111827;
-    --radius: 14px;
-    --shadow:
-        0 1px 2px rgba(16, 24, 40, 0.05), 0 6px 20px rgba(16, 24, 40, 0.06);
-
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    color: var(--c-text);
-    font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        "Segoe UI",
-        Roboto,
-        sans-serif;
-}
-.tenant-page *,
-.tenant-page *::before,
-.tenant-page *::after {
-    box-sizing: border-box;
-}
 
 /* ---------- Tiêu đề ---------- */
 .header-title{
@@ -52,18 +12,18 @@
     align-items: center;
     margin-bottom: 20px ;
 }
-.tenant-page .page-title {
+ .page-title {
     margin: 0 0 4px;
     font-size: 26px;
     font-weight: 700;
     letter-spacing: -0.4px;
 }
-.tenant-page .page-subtitle {
+ .page-subtitle {
     margin: 0;
     color: var(--c-muted);
     font-size: 15px;
 }
-.tenant-page .page-stat {
+ .page-stat {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -75,49 +35,49 @@
     color: var(--c-muted);
     box-shadow: var(--shadow);
 }
-.tenant-page .page-stat i {
+ .page-stat i {
     color: var(--c-text);
 }
-.tenant-page .page-stat b {
+ .page-stat b {
     color: var(--c-text);
     font-size: 16px;
 }
 
 /* ---------- Thẻ (card) ---------- */
-.tenant-page .filter-container,
-.tenant-page .main-content {
+ .filter-container,
+ .main-content {
     background: var(--c-card);
     border: 1px solid var(--c-line);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
 }
-.tenant-page .filter-container {
+ .filter-container {
     padding: 20px 22px;
 }
 
 /* ---------- Bộ lọc ---------- */
-.tenant-page .filter-form {
+ .filter-form {
     display: grid;
     grid-template-columns: minmax(240px, 2fr) repeat(2, minmax(160px, 1fr)) auto;
     gap: 16px;
     align-items: end;
 }
-.tenant-page .filter-group {
+ .filter-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
     min-width: 0;
 }
-.tenant-page .filter-group label {
+ .filter-group label {
     font-size: 13px;
     font-weight: 600;
     color: var(--c-muted);
 }
 
-.tenant-page .input-search {
+ .input-search {
     position: relative;
 }
-.tenant-page .input-search i {
+ .input-search i {
     position: absolute;
     left: 14px;
     top: 50%;
@@ -126,12 +86,12 @@
     font-size: 14px;
     pointer-events: none;
 }
-.tenant-page .input-search input {
+ .input-search input {
     padding-left: 40px;
 }
 
-.tenant-page .filter-group input,
-.tenant-page .filter-group select {
+ .filter-group input,
+ .filter-group select {
     width: 100%;
     height: 44px;
     padding: 0 14px;
@@ -145,27 +105,27 @@
         border-color 0.15s,
         box-shadow 0.15s;
 }
-.tenant-page .filter-group select {
+ .filter-group select {
     cursor: pointer;
 }
-.tenant-page .filter-group input:focus,
-.tenant-page .filter-group select:focus {
+ .filter-group input:focus,
+ .filter-group select:focus {
     outline: none;
     border-color: var(--c-primary);
     box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.12);
 }
 
-.tenant-page .filter-actions {
+ .filter-actions {
     display: flex;
     gap: 10px;
 }
 
 /* ---------- Nút chung ---------- */
-.tenant-page .btn-filter,
-.tenant-page .btn-reset,
-.tenant-page .btn-add-property,
-.tenant-page .btn-exe,
-.tenant-page .btn-pdf {
+ .btn-filter,
+ .btn-reset,
+ .btn-add-property,
+ .btn-exe,
+ .btn-pdf {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -186,64 +146,64 @@
         transform 0.1s,
         box-shadow 0.15s;
 }
-.tenant-page .btn-filter:active,
-.tenant-page .btn-add-property:active {
+ .btn-filter:active,
+ .btn-add-property:active {
     transform: translateY(1px);
 }
 
-.tenant-page .btn-filter,
-.tenant-page .btn-add-property {
+ .btn-filter,
+ .btn-add-property {
     background: #016fff;
     color: #fff;
 }
-.tenant-page .btn-filter:hover,
-.tenant-page .btn-add-property:hover {
+ .btn-filter:hover,
+ .btn-add-property:hover {
     background: #37557c;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
-.tenant-page .btn-reset {
+ .btn-reset {
     background: #fff;
     color: var(--c-text);
     border-color: var(--c-line);
 }
-.tenant-page .btn-reset:hover {
+ .btn-reset:hover {
     background: var(--c-soft);
     border-color: #cfd4dc;
 }
-.tenant-page .btn-reset.is-disabled {
+ .btn-reset.is-disabled {
     opacity: 0.5;
     pointer-events: none;
 }
 
-.tenant-page .btn-exe {
+ .btn-exe {
     background: #ecfdf3;
     color: #067647;
     border-color: #abefc6;
 }
-.tenant-page .btn-exe:hover {
+ .btn-exe:hover {
     background: #d1fadf;
 }
-.tenant-page .btn-pdf {
+ .btn-pdf {
     background: #fef3f2;
     color: #b42318;
     border-color: #fecdca;
 }
-.tenant-page .btn-pdf:hover {
+ .btn-pdf:hover {
     background: #fee4e2;
 }
 
-.tenant-page button:focus-visible,
-.tenant-page a:focus-visible {
+ button:focus-visible,
+ a:focus-visible {
     outline: 2px solid var(--c-primary);
     outline-offset: 2px;
 }
 
 /* ---------- Khối danh sách ---------- */
-.tenant-page .main-content {
+ .main-content {
     overflow: hidden;
 }
-.tenant-page .box-btn {
+ .box-btn {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -251,21 +211,21 @@
     padding: 18px 22px;
     border-bottom: 1px solid var(--c-line);
 }
-.tenant-page .box-btn .btn-add-property {
+ .box-btn .btn-add-property {
     margin-right: auto;
 }
 
-.tenant-page .table-wrap {
+ .table-wrap {
     overflow-x: auto;
 }
-.tenant-page .tenant-table {
+ .tenant-table {
     width: 100%;
     min-width: 980px;
     border-collapse: collapse;
     font-size: 14.5px;
 }
 
-.tenant-page .tenant-table thead th {
+ .tenant-table thead th {
     background: var(--c-soft);
     color: var(--c-muted);
     font-size: 12px;
@@ -280,45 +240,45 @@
 .tenant-table .col-actions {
     text-align: right;
 }
-.tenant-page .tenant-table tbody td {
+ .tenant-table tbody td {
     padding: 14px 18px;
     vertical-align: middle;
     border-bottom: 1px solid #f0f1f3;
 }
-.tenant-page .tenant-table tbody tr {
+ .tenant-table tbody tr {
     transition: background 0.12s;
 }
-.tenant-page .tenant-table tbody tr:hover {
+ .tenant-table tbody tr:hover {
     background: #fafafb;
 }
-.tenant-page .tenant-table tbody tr:last-child td {
+ .tenant-table tbody tr:last-child td {
     border-bottom: 0;
 }
 
-.tenant-page .col-index {
+ .col-index {
     width: 64px;
     color: var(--c-muted);
     font-variant-numeric: tabular-nums;
 }
 
-.tenant-page .text-muted-cell {
+ .text-muted-cell {
     color: var(--c-muted);
 }
-.tenant-page .mono {
+ .mono {
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.3px;
 }
 
 /* ---------- Tên + avatar ---------- */
-.tenant-page .tenant-name {
+ .tenant-name {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-.tenant-page .tenant-name b {
+ .tenant-name b {
     font-weight: 600;
 }
-.tenant-page .avatar {
+ .avatar {
     width: 38px;
     height: 38px;
     flex: none;
@@ -332,37 +292,37 @@
 }
 
 /* ---------- Badge giới tính ---------- */
-.tenant-page .badge {
+ .badge {
     display: inline-block;
     padding: 4px 12px;
     border-radius: 999px;
     font-size: 12.5px;
     font-weight: 600;
 }
-.tenant-page .badge-male {
+ .badge-male {
     background: #eff8ff;
     color: #175cd3;
 }
-.tenant-page .badge-female {
+ .badge-female {
     background: #fdf2fa;
     color: #c11574;
 }
-.tenant-page .badge-other {
+ .badge-other {
     background: #f2f4f7;
     color: #475467;
 }
 
 /* ---------- Nút hành động ---------- */
 
-.tenant-page .action-buttons {
+ .action-buttons {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
     white-space: nowrap;
 }
-.tenant-page .btn-show,
-.tenant-page .btn-edit,
-.tenant-page .btn-delete {
+ .btn-show,
+ .btn-edit,
+ .btn-delete {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -378,57 +338,57 @@
         background 0.15s,
         transform 0.1s;
 }
-.tenant-page .btn-show {
+ .btn-show {
     background: #eff8ff;
     color: #175cd3;
 }
-.tenant-page .btn-show:hover {
+ .btn-show:hover {
     background: #d1e9ff;
 }
-.tenant-page .btn-edit {
+ .btn-edit {
     background: #fffaeb;
     color: #b54708;
 }
-.tenant-page .btn-edit:hover {
+ .btn-edit:hover {
     background: #fef0c7;
 }
-.tenant-page .btn-delete {
+ .btn-delete {
     background: #fef3f2;
     color: #b42318;
 }
-.tenant-page .btn-delete:hover {
+ .btn-delete:hover {
     background: #fee4e2;
 }
-.tenant-page .btn-show:active,
-.tenant-page .btn-edit:active,
-.tenant-page .btn-delete:active {
+ .btn-show:active,
+ .btn-edit:active,
+ .btn-delete:active {
     transform: translateY(1px);
 }
 
 /* ---------- Trạng thái trống ---------- */
-.tenant-page .empty-state {
+ .empty-state {
     text-align: center;
     padding: 56px 16px;
     color: var(--c-muted);
 }
-.tenant-page .empty-state i {
+ .empty-state i {
     font-size: 42px;
     margin-bottom: 14px;
     opacity: 0.6;
 }
-.tenant-page .empty-title {
+ .empty-title {
     margin: 0 0 4px;
     font-size: 17px;
     font-weight: 600;
     color: var(--c-text);
 }
-.tenant-page .empty-desc {
+ .empty-desc {
     margin: 0;
     font-size: 14px;
 }
 
 /* ---------- Chân bảng / phân trang ---------- */
-.tenant-page .table-footer {
+ .table-footer {
     display: flex;
     align-items: center;
     justify-content: left;
@@ -438,7 +398,7 @@
     border-top: 1px solid var(--c-line);
     background: var(--c-soft);
 }
-.tenant-page .result-info {
+ .result-info {
     font-size: 14px;
     color: var(--c-muted);
 }
@@ -486,32 +446,32 @@
 
 /* ---------- Responsive ---------- */
 @media (max-width: 1100px) {
-    .tenant-page .filter-form {
+     .filter-form {
         grid-template-columns: 1fr 1fr;
     }
-    .tenant-page .search-group {
+     .search-group {
         grid-column: 1 / -1;
     }
-    .tenant-page .filter-actions {
+     .filter-actions {
         grid-column: 1 / -1;
     }
 }
 @media (max-width: 600px) {
-    .tenant-page .filter-form {
+     .filter-form {
         grid-template-columns: 1fr;
     }
-    .tenant-page .page-title {
+     .page-title {
         font-size: 22px;
     }
-    .tenant-page .box-btn .btn-add-property {
+     .box-btn .btn-add-property {
         margin-right: 0;
         width: 100%;
     }
-    .tenant-page .box-btn .btn-exe,
-    .tenant-page .box-btn .btn-pdf {
+     .box-btn .btn-exe,
+     .box-btn .btn-pdf {
         flex: 1;
     }
-    .tenant-page .filter-actions > * {
+     .filter-actions > * {
         flex: 1;
     }
 }

@@ -19,7 +19,7 @@ class RentalDemoSeeder extends Seeder
             // =====================================
 
             DB::table('users')->updateOrInsert(
-                ['email' => 'admin@nhatro.com'],
+                ['email' => 'namkiem0000@gmail.com'],
                 [
                     'name' => 'Chủ nhà trọ',
                     'number_phone' => '0901234567',
@@ -39,14 +39,16 @@ class RentalDemoSeeder extends Seeder
             // =====================================
 
             $roomData = [
-                ['P101', 'Tầng 1', 20, 2500000, 'occupied'],
-                ['P102', 'Tầng 1', 22, 2800000, 'occupied'],
-                ['P103', 'Tầng 1', 18, 2200000, 'occupied'],
-                ['P201', 'Tầng 2', 25, 3000000, 'occupied'],
-                ['P202', 'Tầng 2', 22, 2800000, 'occupied'],
-                ['P203', 'Tầng 2', 20, 2500000, 'occupied'],
-                ['P301', 'Tầng 3', 25, 3000000, 'available'],
-                ['P302', 'Tầng 3', 18, 2200000, 'maintenance'],
+                ['P101', 1, 20, 2500000, 'occupied'],
+                ['P102', 1, 22, 2800000, 'occupied'],
+                ['P103', 1, 18, 2200000, 'occupied'],
+                ['P201', 2, 25, 3000000, 'occupied'],
+                ['P202', 2, 22, 2800000, 'occupied'],
+                ['P203', 2, 20, 2500000, 'occupied'],
+                ['P301', 3, 25, 3000000, 'available'],
+                ['P302', 3, 18, 2200000, 'maintenance'],
+                ['P303', 3, 18, 2200000, 'inactive'],
+
             ];
 
             $roomIds = [];

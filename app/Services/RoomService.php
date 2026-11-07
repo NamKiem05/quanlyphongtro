@@ -74,18 +74,60 @@ class RoomService
                 'status',
                 'maintenance'
             )->count(),
+            'inactive' => Room::where(
+                'status',
+                'inactive'
+            )->count(),
         ];
     }
 
     // 3. Thêm phòng
     public function createRoom(array $data): Room
     {
+        $data['status'] = 'available';
         return Room::create($data);
     }
 
     // 4. Cập nhật phòng
+
     public function updateRoom(Room $room, array $data): Room
     {
+        // Chỉ kiểm tra khi người dùng muốn thay đổi trạng thái
+        if (isset($data['status'])) {
+
+            // Kiểm tra phòng có hợp đồng hiệu lực hay không
+            $hasActiveContract = $room->contracts()
+                ->where('status', 'active')
+                ->whereDate('start_date', '<=', today())
+                ->where(function ($query) {
+                    $query->whereNull('end_date')
+                        ->orWhereDate('end_date', '>=', today());
+                })
+                ->exists();
+
+            // Trường hợp chuyển sang đang thuê
+            if ($data['status'] === 'occupied' && !$hasActiveContract) {
+                throw ValidationException::withMessages([
+                    'status' => 'Không thể chuyển sang đang thuê khi phòng chưa có hợp đồng hiệu lực.'
+                ]);
+            }
+
+            // Trường hợp chuyển sang phòng trống
+            if ($data['status'] === 'available' && $hasActiveContract) {
+                throw ValidationException::withMessages([
+                    'status' => 'Phòng vẫn đang có hợp đồng hiệu lực, không thể chuyển về trạng thái trống.'
+                ]);
+            }
+
+            // Không cho ngừng sử dụng khi vẫn có hợp đồng hiệu lực
+            if ($data['status'] === 'inactive' && $hasActiveContract) {
+                throw ValidationException::withMessages([
+                    'status' => 'Không thể ngừng sử dụng phòng khi vẫn còn hợp đồng hiệu lực.'
+                ]);
+            }
+        }
+
+        // Cập nhật thông tin phòng
         $room->update($data);
 
         return $room->refresh();
@@ -94,10 +136,38 @@ class RoomService
     // 5. Xóa phòng
     public function deleteRoom(Room $room): bool
     {
-        // Không cho xóa phòng đã có hợp đồng
+        // Kiểm tra lịch sử hợp đồng
         if ($room->contracts()->exists()) {
             throw ValidationException::withMessages([
-                'room' => 'Không thể xóa phòng vì đã tồn tại hợp đồng liên quan.'
+                'room' => 'Không thể xóa phòng đã có lịch sử hợp đồng.'
+            ]);
+        }
+
+        // Kiểm tra yêu cầu bảo trì
+        if ($room->maintenanceRequests()->exists()) {
+            throw ValidationException::withMessages([
+                'room' => 'Không thể xóa phòng đã có lịch sử yêu cầu bảo trì.'
+            ]);
+        }
+
+        // Kiểm tra dịch vụ phòng
+        if ($room->roomServices()->exists()) {
+            throw ValidationException::withMessages([
+                'room' => 'Không thể xóa phòng đã được thiết lập dịch vụ.'
+            ]);
+        }
+
+        // Kiểm tra chỉ số điện nước
+        if ($room->meterReadings()->exists()) {
+            throw ValidationException::withMessages([
+                'room' => 'Không thể xóa phòng đã có lịch sử chỉ số điện nước.'
+            ]);
+        }
+
+        // Kiểm tra chi phí
+        if ($room->expenses()->exists()) {
+            throw ValidationException::withMessages([
+                'room' => 'Không thể xóa phòng đã có lịch sử chi phí.'
             ]);
         }
 
