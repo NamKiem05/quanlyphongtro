@@ -26,30 +26,61 @@ document.addEventListener("click", function () {
     menuLogin.classList.remove("active");
 });
 
-
 // Thông báo thành công và thất bại
-document.addEventListener("DOMContentLoaded", function () {
-    const toast = document.getElementById("toastMessage");
+window.showToast = function (type, message) {
+    // Xóa Toast cũ nếu đang tồn tại
+    document.querySelectorAll(".toast-message").forEach(function (toast) {
+        toast.remove();
+    });
 
-    if (!toast) return;
+    const toast = document.createElement("div");
+    toast.className = `toast-message ${type}`;
+    toast.id = "toastMessage";
 
-    const closeBtn = toast.querySelector(".toast-close");
+    const icon = document.createElement("div");
+    icon.className = "toast-icon";
 
-    // Hàm đóng thông báo
+    const iconElement = document.createElement("i");
+    iconElement.className =
+        type === "success"
+            ? "fa-solid fa-circle-check"
+            : "fa-solid fa-circle-exclamation";
+
+    icon.appendChild(iconElement);
+
+    const toastContent = document.createElement("div");
+    toastContent.className = "toast-content";
+
+    const title = document.createElement("strong");
+    title.textContent = type === "success" ? "Thành công" : "Thất bại";
+
+    const messageElement = document.createElement("p");
+    messageElement.textContent = message;
+
+    toastContent.append(title, messageElement);
+
+    const closeButton = document.createElement("button");
+    closeButton.type = "button";
+    closeButton.className = "toast-close";
+    closeButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+    toast.append(icon, toastContent, closeButton);
+    document.body.appendChild(toast);
+
     function closeToast() {
         toast.classList.add("hide");
 
-        setTimeout(() => {
+        setTimeout(function () {
             toast.remove();
         }, 400);
     }
 
-    // Tự động đóng sau 3 giây
     const timer = setTimeout(closeToast, 3000);
 
-    // Đóng khi nhấn nút X
-    closeBtn.addEventListener("click", function () {
+    closeButton.addEventListener("click", function () {
         clearTimeout(timer);
         closeToast();
     });
-});
+}
+console.log("ADMIN.JS ĐÃ ĐƯỢC LOAD");
+console.log("showToast:", typeof window.showToast);

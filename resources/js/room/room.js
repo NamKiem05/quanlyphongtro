@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
             available: "Còn trống",
             occupied: "Đang thuê",
             maintenance: "Đang bảo trì",
-            inactive : "Dừng hoạt động"
+            inactive: "Dừng hoạt động",
         };
 
         return statuses[status] || status;
@@ -369,10 +369,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 throw new Error(result.message || "Thêm phòng thất bại.");
             }
 
-            alert("Thêm phòng thành công!");
-
+            // Thành công
             closeCreateRoomModal();
-            window.location.reload();
+
+            showToast("success", result.message);
+
+            // Đợi Toast hiển thị 3 giây rồi tải lại trang
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
         } catch (err) {
             console.error("Lỗi thêm phòng:", err);
 
@@ -578,10 +583,12 @@ document.addEventListener("DOMContentLoaded", function () {
             // Thành công
             closeEditRoomModal();
 
-            alert(result.message || "Cập nhật phòng thành công!");
+            showToast("success", result.message);
 
-            // Tải lại danh sách phòng
-            window.location.reload();
+            // Đợi Toast hiển thị 3 giây rồi tải lại trang
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
         } catch (error) {
             console.error("Lỗi cập nhật phòng:", error);
 
@@ -598,7 +605,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // modal xóa
-    
+
     // 1. Lấy các phần tử HTML
     const deleteRoomModal = document.getElementById("deleteModal");
     const deleteRoomForm = document.getElementById("deleteForm");
@@ -647,3 +654,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+console.log("ROOM.JS ĐÃ ĐƯỢC LOAD");
+console.log("showToast:", typeof window.showToast);

@@ -339,25 +339,25 @@
         transform 0.1s;
 }
  .btn-show {
-    background: #eff8ff;
-    color: #175cd3;
+    background: #175cd3;
+    color: #ffffff;
 }
  .btn-show:hover {
-    background: #d1e9ff;
+    background: #01417c;
 }
  .btn-edit {
-    background: #fffaeb;
-    color: #b54708;
+    background: #fc7100;
+    color: #ffffff;
 }
  .btn-edit:hover {
-    background: #fef0c7;
+    background: #e0a901;
 }
  .btn-delete {
-    background: #fef3f2;
-    color: #b42318;
+    background: #ff0202;
+    color: #ffffff;
 }
  .btn-delete:hover {
-    background: #fee4e2;
+    background: #ff6d63;
 }
  .btn-show:active,
  .btn-edit:active,

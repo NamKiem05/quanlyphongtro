@@ -28,34 +28,40 @@ $hasFilter = request()->filled('search')
 @endphp
 
 <div class="container-fluid contracts-page">
+    <div>
+        {{-- Tiêu đề --}}
+        <header class="page-head">
+            <div>
+                <h1 class="page-title">Quản lý hợp đồng</h1>
+                <p class="page-subtitle">Theo dõi và quản lý hợp đồng thuê phòng</p>
+            </div>
 
-    {{-- Tiêu đề --}}
-    <header class="page-head">
-        <h1 class="page-title">Quản lý hợp đồng</h1>
-        <p class="page-subtitle">Theo dõi và quản lý hợp đồng thuê phòng</p>
-    </header>
+            <button type="button" class="btn btn-brand" id="btnCreateContract">
+                <i class="fa-solid fa-plus"></i>
+                Tạo hợp đồng
+            </button>
+        </header>
+        {{-- Thống kê: bấm vào để lọc nhanh theo trạng thái --}}
+        <nav class="stat-strip" aria-label="Thống kê theo trạng thái">
+            @foreach ($statCards as $card)
+            @php
+            $isActive = $currentStatus === $card['key'];
+            $statUrl = route('contracts.index', array_filter(
+            array_merge(request()->except(['page', 'status']), ['status' => $card['key']])
+            ));
+            @endphp
 
-    {{-- Thống kê: bấm vào để lọc nhanh theo trạng thái --}}
-    <nav class="stat-strip" aria-label="Thống kê theo trạng thái">
-        @foreach ($statCards as $card)
-        @php
-        $isActive = $currentStatus === $card['key'];
-        $statUrl = route('contracts.index', array_filter(
-        array_merge(request()->except(['page', 'status']), ['status' => $card['key']])
-        ));
-        @endphp
-
-        <a href="{{ $statUrl }}"
-            class="stat-item {{ $card['key'] ? 'tone-' . $card['key'] : 'tone-all' }} {{ $isActive ? 'is-active' : '' }}"
-            @if ($isActive) aria-current="true" @endif>
-            <span class="stat-label">
-                <i class="stat-dot"></i>{{ $card['label'] }}
-            </span>
-            <span class="stat-value">{{ number_format($card['value'], 0, ',', '.') }}</span>
-        </a>
-        @endforeach
-    </nav>
-
+            <a href="{{ $statUrl }}"
+                class="stat-item {{ $card['key'] ? 'tone-' . $card['key'] : 'tone-all' }} {{ $isActive ? 'is-active' : '' }}"
+                @if ($isActive) aria-current="true" @endif>
+                <span class="stat-label">
+                    <i class="stat-dot"></i>{{ $card['label'] }}
+                </span>
+                <span class="stat-value">{{ number_format($card['value'], 0, ',', '.') }}</span>
+            </a>
+            @endforeach
+        </nav>
+    </div>
     {{-- Tìm kiếm và bộ lọc --}}
     <section class="panel filter-panel">
         <form action="{{ route('contracts.index') }}" method="GET" class="filter-form">
@@ -193,6 +199,25 @@ $hasFilter = request()->filled('search')
                                 title="Xem chi tiết">
                                 <i class="fa-solid fa-eye"></i>
                             </button>
+                            @if (in_array($contract->status, ['draft', 'waiting_signature']))
+                            <button type="button"
+                                class="btn-icon btn-edit-contract"
+                                data-id="{{ $contract->id }}"
+                                data-url="{{ route('contracts.edit-data', $contract->id) }}"
+                                data-update-url="{{ route('contracts.update', $contract->id) }}"
+                                title="Chỉnh sửa hợp đồng">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+
+                            <button type="button"
+                                class="btn-icon btn-delete-contract"
+                                data-id="{{ $contract->id }}"
+                                data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
+                                data-url="{{ route('contracts.destroy', $contract->id) }}"
+                                title="Xóa hợp đồng">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -229,6 +254,8 @@ $hasFilter = request()->filled('search')
     </section>
 </div>
 @include('admin.contracts.partials.detail_modal')
+@include('admin.contracts.partials.edit_modal')
+@include('admin.contracts.partials.delete_modal')
 
 @endsection
 {{--

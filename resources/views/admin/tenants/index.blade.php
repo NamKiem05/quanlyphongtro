@@ -133,7 +133,7 @@ $hasFilter = request()->filled('keyword') || request()->filled('gender') || requ
                                 data-gender="{{ $tenant->gender }}"
                                 data-address="{{ $tenant->permanent_address }}"
                                 data-note="{{ $tenant->note }}">
-                                <i class="fa-solid fa-eye"></i> Xem
+                                <i class="fa-solid fa-eye"></i>
                             </button>
 
                             <button type="button" class="btn-edit js-tenant-action" title="Chỉnh sửa"
@@ -149,13 +149,13 @@ $hasFilter = request()->filled('keyword') || request()->filled('gender') || requ
                                 data-address="{{ $tenant->permanent_address }}"
                                 data-note="{{ $tenant->note }}"
                                 data-update-url="{{ route('tenants.update', $tenant->id) }}">
-                                <i class="fa-solid fa-pen-to-square"></i> Sửa
+                                <i class="fa-solid fa-pen-to-square"></i>
                             </button>
 
                             <button type="button" class="btn-delete" title="Xóa"
                                 data-url="{{ route('tenants.delete', $tenant->id) }}"
                                 data-name="{{ $tenant->full_name }}">
-                                <i class="fa-solid fa-trash"></i> Xóa
+                                <i class="fa-solid fa-trash"></i>
                             </button>
                         </td>
                     </tr>

@@ -43,12 +43,22 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ->name('rooms.update');
     Route::delete('/rooms/destroy/{room}', [RoomController::class, 'delete'])
         ->name('rooms.destroy');
-        
+
     //Quản lý hợp đồng
+    Route::get('/contracts/create-data', [ContractController::class, 'createData'])
+        ->name('contracts.create-data');
+    Route::post('/contracts', [ContractController::class, 'store'])
+        ->name('contracts.store');
     Route::get('/contracts', [ContractController::class, 'index'])
         ->name('contracts.index');
     Route::get('/contracts/{contract}', [ContractController::class, 'show'])
         ->name('contracts.show');
+    Route::get('/contracts/{contract}/edit-data', [ContractController::class, 'editData'])
+        ->name('contracts.edit-data');
+    Route::put('/contracts/{contract}', [ContractController::class, 'update'])
+        ->name('contracts.update');
+    Route::delete('/contracts/{contract}', [ContractController::class, 'destroy'])
+        ->name('contracts.destroy');
 });
 
 // Khu vực Client
