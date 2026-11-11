@@ -437,49 +437,102 @@
 .rooms-page .actions form {
     margin: 0;
 }
+/* =========================================
+   ROOM ACTION DROPDOWN
+========================================= */
 
-.rooms-page .btn-action {
-    width: 32px;
-    height: 30px;
+.room-action-dropdown {
+    position: relative;
     display: inline-flex;
+    justify-content: center;
+}
+
+.btn-room-action-menu {
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
-    color: #fff;
-    border: 0;
+    width: 36px;
+    height: 36px;
+    color: #64748b;
+    font-size: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-room-action-menu:hover,
+.btn-room-action-menu.active {
+    color: #4a4a4a;
+    background: #d9d9d9;
+    border-color: #9c9c9c;
+}
+
+.room-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 7px);
+    right: 0;
+    z-index: 1000;
+    display: none;
+    min-width: 175px;
+    padding: 6px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+.room-dropdown-menu.show {
+    display: block;
+}
+
+.room-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 11px;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    background: transparent;
+    border: none;
     border-radius: 7px;
     cursor: pointer;
-    text-decoration: none;
-    transition:
-        transform 0.15s ease,
-        filter 0.15s ease,
-        box-shadow 0.15s ease;
+    transition: all 0.2s ease;
 }
 
-.rooms-page .btn-action svg {
-    width: 15px;
-    height: 15px;
+.room-dropdown-item i {
+    width: 16px;
+    color: #64748b;
 }
 
-.rooms-page .btn-action:hover {
-    transform: translateY(-1px);
-    filter: brightness(0.93);
-    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
-    color: #fff;
+.room-dropdown-item:hover {
+    color: #047857;
+    background: #ecfdf5;
 }
 
-.rooms-page .btn-view {
-    background: #ffaf01;
+.room-dropdown-item:hover i {
+    color: #047857;
 }
 
-.rooms-page .btn-edit {
-    background: #4f8df5;
+.room-dropdown-item.danger {
+    color: #dc2626;
 }
 
-.rooms-page .btn-delete {
-    background: #f87171;
+.room-dropdown-item.danger i {
+    color: #dc2626;
 }
 
+.room-dropdown-item.danger:hover {
+    background: #fef2f2;
+}
+
+.room-dropdown-divider {
+    height: 1px;
+    margin: 5px 3px;
+    background: #e2e8f0;
+}
 /* ===== Trạng thái trống ===== */
 .rooms-page .empty-state {
     padding: 56px 20px;
@@ -740,7 +793,6 @@
 
 .room-modal-header .modal-title {
     margin: 0;
-
     font-size: 22px;
     font-weight: 700;
     color: #ffffff;
@@ -1734,5 +1786,256 @@ body.room-modal-open {
 
     .delete-modal-footer {
         padding: 14px;
+    }
+}
+/* =====================================================
+   DỊCH VỤ ÁP DỤNG - MODAL THÊM PHÒNG
+===================================================== */
+
+#createRoomModal .room-services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+#createRoomModal .room-service-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#createRoomModal .room-service-item:hover {
+    border-color: #0167ff;
+    background: #dfeeff;
+}
+
+#createRoomModal .room-service-item:has(input[type="checkbox"]:checked) {
+    border-color: #1655a3;
+    background: #f0f3fd;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.08);
+}
+
+/* Checkbox */
+#createRoomModal .room-service-item > input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: #16a34a;
+    cursor: pointer;
+}
+
+/* Thông tin dịch vụ */
+#createRoomModal .room-service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+}
+
+#createRoomModal .room-service-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+#createRoomModal .room-service-info small {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Ô đơn giá */
+#createRoomModal .room-service-price {
+    width: 145px;
+    flex-shrink: 0;
+}
+
+#createRoomModal .room-service-price input {
+    width: 100%;
+    height: 38px;
+    padding: 0 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 7px;
+    outline: none;
+    background: #fff;
+    color: #374151;
+    font-size: 13px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#createRoomModal .room-service-price input:focus {
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+/* Trạng thái chưa có dịch vụ */
+#createRoomModal .room-services-list .text-muted {
+    padding: 18px;
+    margin: 0;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    #createRoomModal .room-service-item {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    #createRoomModal .room-service-info {
+        flex: 1;
+    }
+
+    #createRoomModal .room-service-price {
+        width: 100%;
+        padding-left: 32px;
+    }
+}
+
+/* =====================================================
+   DỊCH VỤ ÁP DỤNG - MODAL THÊM / CHỈNH SỬA PHÒNG
+===================================================== */
+
+#createRoomModal .room-services-list,
+#editRoomModal .room-services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+/* Một dòng dịch vụ */
+#createRoomModal .room-service-item,
+#editRoomModal .room-service-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Hover */
+#createRoomModal .room-service-item:hover,
+#editRoomModal .room-service-item:hover {
+    border-color: #036cff;
+    background: #f6f7ff;
+}
+
+/* Khi checkbox được chọn */
+#createRoomModal .room-service-item:has(input[type="checkbox"]:checked),
+#editRoomModal .room-service-item:has(input[type="checkbox"]:checked) {
+    border-color: #045ffb;
+    background: #f0f3fd;
+    box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.08);
+}
+
+/* Checkbox */
+#createRoomModal .room-service-item > input[type="checkbox"],
+#editRoomModal .room-service-item > input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: #16a34a;
+    cursor: pointer;
+}
+
+/* Thông tin dịch vụ */
+#createRoomModal .room-service-info,
+#editRoomModal .room-service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 0;
+}
+
+#createRoomModal .room-service-name,
+#editRoomModal .room-service-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+#createRoomModal .room-service-info small,
+#editRoomModal .room-service-info small {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Ô nhập đơn giá */
+#createRoomModal .room-service-price,
+#editRoomModal .room-service-price {
+    width: 155px;
+    flex-shrink: 0;
+}
+
+#createRoomModal .room-service-price input,
+#editRoomModal .room-service-price input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    outline: none;
+    background: #fff;
+    color: #374151;
+    font-size: 13px;
+    transition: all 0.2s ease;
+}
+
+#createRoomModal .room-service-price input:focus,
+#editRoomModal .room-service-price input:focus {
+    border-color: #035fff;
+    box-shadow: 0 0 0 3px rgba(15, 78, 110, 0.1);
+}
+
+/* Trạng thái chưa có dịch vụ */
+#createRoomModal .room-services-list .text-muted,
+#editRoomModal .room-services-list .text-muted {
+    padding: 18px;
+    margin: 0;
+    border: 1px dashed #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    #createRoomModal .room-service-item,
+    #editRoomModal .room-service-item {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    #createRoomModal .room-service-info,
+    #editRoomModal .room-service-info {
+        flex: 1;
+    }
+
+    #createRoomModal .room-service-price,
+    #editRoomModal .room-service-price {
+        width: 100%;
+        padding-left: 32px;
     }
 }

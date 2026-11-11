@@ -504,6 +504,40 @@ document.addEventListener("DOMContentLoaded", function () {
             editRoomPrice.value = room.rent_price ?? "";
             editRoomStatus.value = room.status ?? "available";
             editRoomDescription.value = room.description ?? "";
+            // Hiển thị dịch vụ đã áp dụng cho phòng
+            const roomServices = room.room_services || [];
+
+            // Reset checkbox và đơn giá về mặc định
+            editForm
+                .querySelectorAll(".edit-room-service-checkbox")
+                .forEach((checkbox) => {
+                    checkbox.checked = false;
+                });
+
+            editForm
+                .querySelectorAll(".edit-room-service-price")
+                .forEach((input) => {
+                    input.value = input.defaultValue;
+                });
+
+            // Đổ dữ liệu dịch vụ hiện tại
+            roomServices.forEach((roomService) => {
+                const checkbox = editForm.querySelector(
+                    `.edit-room-service-checkbox[value="${roomService.service_id}"]`,
+                );
+
+                const priceInput = editForm.querySelector(
+                    `[name="service_prices[${roomService.service_id}]"]`,
+                );
+
+                if (checkbox) {
+                    checkbox.checked = true;
+                }
+
+                if (priceInput) {
+                    priceInput.value = roomService.unit_price;
+                }
+            });
 
             // Gán URL cập nhật cho form
             editForm.dataset.url = updateUrl;
@@ -656,3 +690,36 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 console.log("ROOM.JS ĐÃ ĐƯỢC LOAD");
 console.log("showToast:", typeof window.showToast);
+
+// =========================================
+// DROPDOWN THAO TÁC PHÒNG
+// =========================================
+
+document.addEventListener("click", function (event) {
+    const clickedButton = event.target.closest(".btn-room-action-menu");
+
+    // Đóng các menu đang mở
+    document.querySelectorAll(".room-dropdown-menu.show").forEach((menu) => {
+        if (!clickedButton || !menu.parentElement.contains(clickedButton)) {
+            menu.classList.remove("show");
+
+            const button = menu.parentElement.querySelector(
+                ".btn-room-action-menu",
+            );
+            button?.classList.remove("active");
+            button?.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    // Mở menu được nhấn
+    if (clickedButton) {
+        const dropdown = clickedButton
+            .closest(".room-action-dropdown")
+            .querySelector(".room-dropdown-menu");
+
+        const isOpen = dropdown.classList.toggle("show");
+
+        clickedButton.classList.toggle("active", isOpen);
+        clickedButton.setAttribute("aria-expanded", String(isOpen));
+    }
+});

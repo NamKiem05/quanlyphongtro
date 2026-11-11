@@ -41,7 +41,7 @@
 
 .contracts-page .page-title {
     margin: 0;
-    color: #064e3b;
+    color: #0563b1;
     font-size: 26px;
     font-weight: 700;
     line-height: 1.3;
@@ -124,7 +124,7 @@
 /* Stat colors */
 
 .contracts-page .tone-all .stat-dot {
-    background: #064e3b;
+    background: #ff03ff;
 }
 
 .contracts-page .tone-draft .stat-dot {
@@ -134,7 +134,9 @@
 .contracts-page .tone-waiting_signature .stat-dot {
     background: #f59e0b;
 }
-
+.contracts-page .tone-waiting_owner_signature .stat-dot {
+    background: #001aff;
+}
 .contracts-page .tone-active .stat-dot {
     background: #16a34a;
 }
@@ -227,9 +229,9 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
-    border: 1px solid #064e3b;
+    border: 1px solid #0177ff;
     border-radius: 8px;
-    background: #064e3b;
+    background: #0059ff;
     color: #fff;
     font-size: 13px;
     font-weight: 600;
@@ -237,8 +239,8 @@
 }
 
 .contracts-page .btn-brand:hover {
-    background: #043d2e;
-    border-color: #043d2e;
+    background: #1178ff;
+    border-color: #1e86fd;
     color: #fff;
 }
 
@@ -265,7 +267,7 @@
 ======================================== */
 
 .contracts-page .table-panel {
-    overflow: hidden;
+    overflow: auto;
 }
 
 .contracts-page .panel-head {
@@ -437,6 +439,10 @@
     background: #fef3c7;
     color: #b45309;
 }
+.contracts-page .status-pill.is-waiting_owner_signature {
+    background: #96eaff;
+    color: #001aff;
+}
 
 .contracts-page .status-pill.is-active {
     background: #dcfce7;
@@ -457,52 +463,6 @@
    ACTION BUTTON
 ======================================== */
 
-.contracts-page .btn-view-contract{
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #fdae03;
-    border-radius: 8px;
-    background: #fd9902;
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.contracts-page .btn-edit-contract{
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #0367fd;
-    border-radius: 8px;
-    background: #0277fd;
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.contracts-page .btn-delete-contract{
-    width: 34px;
-    height: 34px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #fd0303;
-    border-radius: 8px;
-    background: #fd0a02;
-    color: #ffffff;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.contracts-page .btn-icon:hover {
-    background: #064e3b;
-    border-color: #064e3b;
-    color: #fff;
-    transform: translateY(-1px);
-}
 
 /* ========================================
    EMPTY STATE
@@ -1624,4 +1584,97 @@
     .contract-delete-actions button {
         width: 100%;
     }
+}
+
+/* ========================================
+   CONTRACT ACTION DROPDOWN
+======================================== */
+
+.contract-actions-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.btn-contract-menu-toggle {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-contract-menu-toggle:hover {
+    background: #f1f5f9;
+    color: #064e3b;
+}
+
+.contract-actions-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 1000;
+    min-width: 190px;
+    padding: 6px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    text-align: left;
+}
+
+.contract-actions-menu[hidden] {
+    display: none;
+}
+
+.contract-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: #334155;
+    font-size: 13px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.contract-menu-item i {
+    width: 16px;
+    color: #64748b;
+}
+
+.contract-menu-item:hover {
+    background: #f1f5f9;
+}
+
+.contract-menu-item.danger,
+.contract-menu-item.danger i {
+    color: #dc2626;
+}
+
+.contract-menu-item.danger:hover {
+    background: #fef2f2;
+}
+.owner-signature-wrapper {
+    width: 100%;
+    height: 200px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.owner-signature-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+    touch-action: none;
 }

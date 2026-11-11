@@ -9,14 +9,14 @@ class Service extends Model
 {
     protected $fillable = [
         'name',
-        'unit',
-        'price',
         'type',
+        'unit',
+        'unit_price',
         'description',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'unit_price' => 'decimal:2',
     ];
 
     public function roomServices(): HasMany
@@ -27,5 +27,9 @@ class Service extends Model
     public function meterReadings(): HasMany
     {
         return $this->hasMany(MeterReading::class);
+    }
+    public function contractServices(): HasMany
+    {
+        return $this->hasMany(ContractService::class);
     }
 }

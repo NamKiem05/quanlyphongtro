@@ -208,29 +208,51 @@
                             <td>{{ $room->contracts_count }}</td>
 
                             <td>
-                                <div class="actions">
-                                    <button type="button"
-                                        class="btn-action btn-view btn-room-detail"
-                                        data-url="{{ route('rooms.detail', $room->id) }}"
-                                        title="Xem chi tiết">
-                                        <i class="fa-solid fa-eye"></i>
-                                    </button>
+                                <div class="room-action-dropdown">
 
+                                    {{-- Nút 3 chấm --}}
                                     <button
                                         type="button"
-                                        class="btn-action btn-edit btn-edit-room"
-                                        data-room-id="{{ $room->id }}"
-                                        data-detail-url="{{ route('rooms.detail', $room->id) }}"
-                                        data-update-url="{{ route('rooms.update', $room->id) }}">
-                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        class="btn-room-action-menu"
+                                        title="Thao tác"
+                                        aria-label="Thao tác phòng"
+                                        aria-expanded="false">
+                                        <i class="fa-solid fa-ellipsis-vertical"></i>
                                     </button>
 
-                                    <button type="button"
-                                        class="btn-action btn-delete btn-delete-room"
-                                        data-url="{{ route('rooms.destroy', $room->id) }}"
-                                        data-name="{{ $room->name }}" title="Xóa">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
+                                    {{-- Menu --}}
+                                    <div class="room-dropdown-menu">
+
+                                        <button
+                                            type="button"
+                                            class="room-dropdown-item btn-room-detail"
+                                            data-url="{{ route('rooms.detail', $room->id) }}">
+                                            <i class="fa-solid fa-eye"></i>
+                                            <span>Xem chi tiết</span>
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            class="room-dropdown-item btn-edit-room"
+                                            data-room-id="{{ $room->id }}"
+                                            data-detail-url="{{ route('rooms.detail', $room->id) }}"
+                                            data-update-url="{{ route('rooms.update', $room->id) }}">
+                                            <i class="fa-solid fa-pen-to-square"></i>
+                                            <span>Chỉnh sửa</span>
+                                        </button>
+
+                                        <div class="room-dropdown-divider"></div>
+
+                                        <button
+                                            type="button"
+                                            class="room-dropdown-item danger btn-delete-room"
+                                            data-url="{{ route('rooms.destroy', $room->id) }}"
+                                            data-name="{{ $room->name }}">
+                                            <i class="fa-solid fa-trash"></i>
+                                            <span>Xóa phòng</span>
+                                        </button>
+
+                                    </div>
                                 </div>
                             </td>
                         </tr>

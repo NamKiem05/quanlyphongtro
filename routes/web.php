@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ContractController;
+use App\Http\Controllers\Admin\HouseSettingController;
+use App\Http\Controllers\Admin\ContractPdfController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\ContractSigningController;
 
 Route::get('/', function () {
     return view('/auth/login');
@@ -59,7 +63,58 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
         ->name('contracts.update');
     Route::delete('/contracts/{contract}', [ContractController::class, 'destroy'])
         ->name('contracts.destroy');
+    // Chuyển hợp đồng sang chờ ký
+    Route::patch('/contracts/{contract}/send-for-signature', [ContractController::class, 'sendForSignature'])
+        ->name('contracts.send-for-signature');
+    // Kích hoạt hợp đồng
+    Route::patch('/contracts/{contract}/activate', [ContractController::class, 'activate'])
+        ->name('contracts.activate');
+    // Chấm dứt hợp đồng
+    Route::patch('/contracts/{contract}/terminate', [ContractController::class, 'terminate'])
+        ->name('contracts.terminate');
+    // Xuất PDF hợp đồng
+    Route::get('/contracts/{contract}/pdf', [ContractPdfController::class, 'export'])
+        ->name('contracts.pdf');
+    Route::get('/contracts/{contract}/signed-pdf', [ContractController::class, 'signedPdf'])
+        ->name('contracts.signed-pdf');
+    // Chủ nhà ký hợp đồng
+    Route::post('/contracts/{contract}/owner-sign', [ContractController::class, 'ownerSign'])
+        ->middleware('throttle:10,1')
+        ->name('contracts.owner-sign');
+
+    // Quản lý thông tin nhà trọ
+    Route::get('/house-settings', [HouseSettingController::class, 'index'])
+        ->name('house-settings.index');
+
+    Route::put('/house-settings', [HouseSettingController::class, 'update'])
+        ->name('house-settings.update');
+
+
+    // Quản lý dịch vụ
+    Route::get('/services', [ServiceController::class, 'index'])
+        ->name('services.index');
+    Route::post('/services', [ServiceController::class, 'store'])
+        ->name('services.store');
+    Route::get('/services/{service}/detail', [ServiceController::class, 'detail'])
+        ->name('services.detail');
+    Route::put('/services/{service}', [ServiceController::class, 'update'])
+        ->name('services.update');
+    Route::delete('/services/destroy/{service}', [ServiceController::class, 'delete'])
+        ->name('services.destroy');
 });
+
+
+//chức năng kí hợp đồng
+Route::get('/contract-signing/{token}', [ContractSigningController::class, 'show'])
+    ->name('contract-signing.show');
+Route::get('/contract-signing/{token}/pdf', [ContractSigningController::class, 'pdf'])
+    ->name('contract-signing.pdf');
+Route::post('/contract-signing/{token}', [ContractSigningController::class, 'sign'])
+    ->middleware('throttle:10,1')
+    ->name('contract-signing.sign');
+Route::get('/contract-signing/{token}/signed-pdf', [ContractSigningController::class, 'signedPdf'])
+    ->name('contract-signing.signed-pdf');
+
 
 // Khu vực Client
 Route::middleware('auth')->prefix('client')->name('client.')->group(function () {

@@ -7,6 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const loading = document.getElementById("contractDetailLoading");
     const error = document.getElementById("contractDetailError");
     const content = document.getElementById("contractDetailContent");
+    let currentDetailUrl = null;
+    let currentOwnerSignUrl = null;
+
+    let signatureContext = null;
+    let hasOwnerSignature = false;
 
     // 2. Hàm mở modal
     function openModal() {
@@ -104,7 +109,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderContract(contract) {
         const statusLabels = {
             draft: "Bản nháp",
-            waiting_signature: "Chờ ký",
+            waiting_signature: "Chờ người thuê ký",
+            waiting_owner_signature: "Chờ chủ nhà ký",
             active: "Đang hiệu lực",
             expired: "Đã hết hạn",
             terminated: "Đã chấm dứt",
@@ -128,6 +134,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 ? formatDate(contract.signed_at) +
                       " " +
                       String(contract.signed_at).substring(11, 16)
+                : "Chưa ký",
+        );
+        setText(
+            "detailOwnerSignedAt",
+            contract.owner_signed_at
+                ? formatDate(contract.owner_signed_at) +
+                      " " +
+                      String(contract.owner_signed_at).substring(11, 16)
                 : "Chưa ký",
         );
 
@@ -155,28 +169,228 @@ document.addEventListener("DOMContentLoaded", function () {
         setText("detailTerms", contract.terms || "Chưa có điều khoản.");
 
         // Tệp hợp đồng
+        // Tệp hợp đồng
         const files = document.getElementById("detailContractFiles");
 
         files.replaceChildren();
 
-        if (contract.pdf_path || contract.signed_pdf_path) {
+        function createPdfLink(url, label, iconClass) {
+            if (!url) return;
+
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.className = "btn btn-outline-primary btn-sm me-2 mb-2";
+
+            const icon = document.createElement("i");
+            icon.className = `${iconClass} me-2`;
+
+            link.append(icon, document.createTextNode(label));
+
+            files.append(link);
+        }
+
+        // PDF hợp đồng chưa ký
+        if (contract.pdf_url) {
+            createPdfLink(
+                contract.pdf_url,
+                "Xem hợp đồng",
+                "fa-solid fa-file-pdf",
+            );
+        }
+
+        // PDF hợp đồng đã ký
+        if (contract.signed_pdf_url) {
+            createPdfLink(
+                contract.signed_pdf_url,
+                "Xem hợp đồng đã ký",
+                "fa-solid fa-file-circle-check",
+            );
+        }
+
+        // Không có file
+        if (!contract.pdf_url && !contract.signed_pdf_url) {
             const message = document.createElement("span");
             message.className = "text-muted";
-            message.textContent = "Hợp đồng đã có tệp đính kèm.";
+
+            message.textContent =
+                contract.status === "waiting_signature"
+                    ? "Hợp đồng đang chờ người thuê ký."
+                    : "Chưa có tệp hợp đồng.";
 
             files.append(message);
-        } else {
-            files.textContent = "Chưa có tệp đính kèm.";
+        }
+        const ownerSignatureSection = document.getElementById(
+            "ownerSignatureSection",
+        );
+
+        if (ownerSignatureSection) {
+            ownerSignatureSection.hidden =
+                contract.status !== "waiting_owner_signature";
         }
     }
 
+    function initOwnerSignatureCanvas() {
+        const canvas = document.getElementById("ownerSignatureCanvas");
+
+        if (!canvas) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+
+        const ctx = canvas.getContext("2d");
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineWidth = 2;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        ctx.strokeStyle = "#111827";
+
+        signatureContext = ctx;
+        hasOwnerSignature = false;
+
+        let isDrawing = false;
+
+        function getPosition(event) {
+            const bounds = canvas.getBoundingClientRect();
+
+            return {
+                x: event.clientX - bounds.left,
+                y: event.clientY - bounds.top,
+            };
+        }
+
+        canvas.onpointerdown = function (event) {
+            isDrawing = true;
+            canvas.setPointerCapture(event.pointerId);
+
+            const pos = getPosition(event);
+
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        };
+
+        canvas.onpointermove = function (event) {
+            if (!isDrawing) return;
+
+            const pos = getPosition(event);
+
+            ctx.lineTo(pos.x, pos.y);
+            ctx.stroke();
+
+            hasOwnerSignature = true;
+        };
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        canvas.onpointerup = stopDrawing;
+        canvas.onpointercancel = stopDrawing;
+        canvas.onlostpointercapture = stopDrawing;
+    }
+    document
+        .getElementById("btnClearOwnerSignature")
+        ?.addEventListener("click", function () {
+            const canvas = document.getElementById("ownerSignatureCanvas");
+
+            if (!canvas || !signatureContext) return;
+
+            signatureContext.clearRect(
+                0,
+                0,
+                canvas.width / (window.devicePixelRatio || 1),
+                canvas.height / (window.devicePixelRatio || 1),
+            );
+
+            hasOwnerSignature = false;
+
+            hasOwnerSignature = false;
+        });
+
+    document
+        .getElementById("btnSubmitOwnerSignature")
+        ?.addEventListener("click", async function () {
+            const canvas = document.getElementById("ownerSignatureCanvas");
+            const button = this;
+
+            if (!hasOwnerSignature) {
+                alert("Anh vui lòng ký tên trước khi xác nhận.");
+                return;
+            }
+
+            if (!currentOwnerSignUrl) {
+                alert("Không tìm thấy đường dẫn ký hợp đồng.");
+                return;
+            }
+
+            const csrfToken = document.querySelector(
+                'meta[name="csrf-token"]',
+            )?.content;
+
+            if (!csrfToken) {
+                alert("Không tìm thấy CSRF token.");
+                return;
+            }
+
+            const signature = canvas.toDataURL("image/png");
+
+            button.disabled = true;
+            button.innerHTML = "Đang xử lý...";
+
+            try {
+                const response = await fetch(currentOwnerSignUrl, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                        "X-CSRF-TOKEN": csrfToken,
+                    },
+                    body: JSON.stringify({
+                        signature: signature,
+                    }),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    const message =
+                        result.message ||
+                        result.errors?.signature?.[0] ||
+                        result.errors?.contract?.[0] ||
+                        "Không thể ký hợp đồng.";
+
+                    throw new Error(message);
+                }
+
+                alert(result.message);
+
+                // Tải lại thông tin hợp đồng sau khi ký thành công.
+                await viewContract(currentDetailUrl);
+            } catch (error) {
+                console.error("Owner signing error:", error);
+                alert(error.message);
+            } finally {
+                button.disabled = false;
+                button.innerHTML =
+                    '<i class="fa-solid fa-check"></i> Xác nhận ký hợp đồng';
+            }
+        });
     // 9. Gọi API lấy chi tiết hợp đồng
-    async function viewContract(url) {
+    async function viewContract(url, ownerSignUrl = null) {
+        currentDetailUrl = url;
+        currentOwnerSignUrl = ownerSignUrl;
+
         openModal();
 
         try {
             const response = await fetch(url, {
-                method: "GET",
                 headers: {
                     Accept: "application/json",
                     "X-Requested-With": "XMLHttpRequest",
@@ -184,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             if (!response.ok) {
-                throw new Error("Không thể tải dữ liệu hợp đồng.");
+                throw new Error("Không thể tải hợp đồng.");
             }
 
             const result = await response.json();
@@ -197,8 +411,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
             loading.hidden = true;
             content.hidden = false;
+
+            if (result.data.status === "waiting_owner_signature") {
+                requestAnimationFrame(() => {
+                    initOwnerSignatureCanvas();
+                });
+            }
         } catch (err) {
-            console.error("Lỗi tải chi tiết hợp đồng:", err);
+            console.error("View contract error:", err);
 
             loading.hidden = true;
             error.hidden = false;
@@ -207,17 +427,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 10. Bắt sự kiện nhấn nút xem chi tiết
     document.addEventListener("click", function (event) {
-        const button = event.target.closest(".btn-view-contract");
+        // Nút ký hợp đồng
+        const signButton = event.target.closest(".btn-owner-sign-contract");
 
-        if (!button) return;
+        if (signButton) {
+            const detailUrl = signButton.dataset.detailUrl;
+            const signUrl = signButton.dataset.url;
 
-        const url = button.dataset.url;
+            if (detailUrl && signUrl) {
+                viewContract(detailUrl, signUrl);
+            }
+
+            return;
+        }
+
+        // Nút xem chi tiết
+        const viewButton = event.target.closest(".btn-view-contract");
+
+        if (!viewButton) return;
+
+        const url = viewButton.dataset.url;
 
         if (url) {
             viewContract(url);
         }
     });
-
     // 11. Đóng modal khi nhấn nút đóng hoặc lớp nền
     modal.querySelectorAll("[data-close-detail]").forEach(function (button) {
         button.addEventListener("click", closeModal);

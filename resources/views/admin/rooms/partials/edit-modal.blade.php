@@ -13,18 +13,18 @@
                 </h5>
 
                 <button type="button"
-                        class="btn-close-room-icon"
-                        data-edit-room-close
-                        aria-label="Đóng">
+                    class="btn-close-room-icon"
+                    data-edit-room-close
+                    aria-label="Đóng">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
 
             {{-- Form --}}
             <form id="editRoomForm"
-                  class="create-room-form"
-                  method="POST"
-                  novalidate>
+                class="create-room-form"
+                method="POST"
+                novalidate>
 
                 @csrf
                 @method('PUT')
@@ -32,7 +32,7 @@
                 <div class="room-modal-body">
 
                     <div id="editRoomError"
-                         class="alert alert-danger d-none"></div>
+                        class="alert alert-danger d-none"></div>
 
                     <div class="detail-section create-room-section">
 
@@ -51,14 +51,14 @@
                                 </label>
 
                                 <input type="text"
-                                       name="name"
-                                       id="editRoomName"
-                                       class="form-control"
-                                       placeholder="Ví dụ: P101"
-                                       autocomplete="off">
+                                    name="name"
+                                    id="editRoomName"
+                                    class="form-control"
+                                    placeholder="Ví dụ: P101"
+                                    autocomplete="off">
 
                                 <small class="field-error"
-                                       data-error="name"></small>
+                                    data-error="name"></small>
                             </div>
 
                             {{-- Tầng --}}
@@ -69,14 +69,14 @@
                                 </label>
 
                                 <input type="number"
-                                       name="floor"
-                                       id="editRoomFloor"
-                                       class="form-control"
-                                       min="1"
-                                       placeholder="Ví dụ: 1">
+                                    name="floor"
+                                    id="editRoomFloor"
+                                    class="form-control"
+                                    min="1"
+                                    placeholder="Ví dụ: 1">
 
                                 <small class="field-error"
-                                       data-error="floor"></small>
+                                    data-error="floor"></small>
                             </div>
 
                             {{-- Diện tích --}}
@@ -88,17 +88,17 @@
 
                                 <div class="input-with-unit">
                                     <input type="number"
-                                           name="area"
-                                           id="editRoomArea"
-                                           class="form-control"
-                                           min="0"
-                                           step="0.01">
+                                        name="area"
+                                        id="editRoomArea"
+                                        class="form-control"
+                                        min="0"
+                                        step="0.01">
 
                                     <span class="input-unit">m²</span>
                                 </div>
 
                                 <small class="field-error"
-                                       data-error="area"></small>
+                                    data-error="area"></small>
                             </div>
 
                             {{-- Giá thuê --}}
@@ -110,17 +110,17 @@
 
                                 <div class="input-with-unit">
                                     <input type="number"
-                                           name="rent_price"
-                                           id="editRoomPrice"
-                                           class="form-control"
-                                           min="0"
-                                           step="1000">
+                                        name="rent_price"
+                                        id="editRoomPrice"
+                                        class="form-control"
+                                        min="0"
+                                        step="1000">
 
                                     <span class="input-unit">VNĐ</span>
                                 </div>
 
                                 <small class="field-error"
-                                       data-error="rent_price"></small>
+                                    data-error="rent_price"></small>
                             </div>
 
                             {{-- Trạng thái --}}
@@ -131,19 +131,19 @@
                                 </label>
 
                                 <select name="status"
-                                        id="editRoomStatus"
-                                        class="form-select">
+                                    id="editRoomStatus"
+                                    class="form-select">
 
                                     <option value="available">Phòng trống</option>
                                     <option value="occupied">Đang thuê</option>
                                     <option value="maintenance">Bảo trì</option>
                                     <option value="inactive">Dừng hoạt động</option>
-                                    
+
 
                                 </select>
 
                                 <small class="field-error"
-                                       data-error="status"></small>
+                                    data-error="status"></small>
                             </div>
 
                             {{-- Mô tả --}}
@@ -154,16 +154,64 @@
                                 </label>
 
                                 <textarea name="description"
-                                          id="editRoomDescription"
-                                          class="form-control"
-                                          rows="3"
-                                          maxlength="1000"
-                                          placeholder="Nhập mô tả về phòng..."></textarea>
+                                    id="editRoomDescription"
+                                    class="form-control"
+                                    rows="3"
+                                    maxlength="1000"
+                                    placeholder="Nhập mô tả về phòng..."></textarea>
 
                                 <small class="field-error"
-                                       data-error="description"></small>
+                                    data-error="description"></small>
                             </div>
 
+                        </div>
+
+                    </div>
+                    {{-- Dịch vụ áp dụng cho phòng --}}
+                    <div class="detail-section edit-room-section">
+                        <div class="detail-section-header">
+                            Dịch vụ áp dụng
+                        </div>
+
+                        <div class="room-services-list">
+                            @forelse ($services as $service)
+                            <label class="room-service-item">
+                                <input
+                                    type="checkbox"
+                                    name="services[]"
+                                    value="{{ $service->id }}"
+                                    class="edit-room-service-checkbox">
+
+                                <div class="room-service-info">
+                                    <span class="room-service-name">
+                                        {{ $service->name }}
+                                    </span>
+
+                                    <small>
+                                        {{ $service->type === 'metered' ? 'Dịch vụ tính theo chỉ số' : 'Dịch vụ cố định' }}
+
+                                        @if ($service->unit)
+                                        · Đơn vị: {{ $service->unit }}
+                                        @endif
+                                    </small>
+                                </div>
+
+                                <div class="room-service-price">
+                                    <input
+                                        type="number"
+                                        name="service_prices[{{ $service->id }}]"
+                                        value="{{ $service->unit_price }}"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="Đơn giá"
+                                        class="edit-room-service-price">
+                                </div>
+                            </label>
+                            @empty
+                            <p class="text-muted">
+                                Chưa có dịch vụ nào. Anh hãy tạo dịch vụ trước.
+                            </p>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -172,15 +220,15 @@
                 <div class="room-modal-footer">
 
                     <button type="button"
-                            class="btn-cancel-room"
-                            data-edit-room-close>
+                        class="btn-cancel-room"
+                        data-edit-room-close>
                         <i class="fa-solid fa-xmark"></i>
                         Hủy
                     </button>
 
                     <button type="submit"
-                            class="btn-submit-room"
-                            id="btnUpdateRoom">
+                        class="btn-submit-room"
+                        id="btnUpdateRoom">
 
                         <i class="fa-solid fa-floppy-disk"></i>
                         <span>Lưu thay đổi</span>

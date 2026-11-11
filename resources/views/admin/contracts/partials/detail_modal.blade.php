@@ -1,4 +1,3 @@
-
 <div class="contract-detail-modal" id="contractDetailModal">
 
     <div class="contract-detail-overlay" data-close-detail></div>
@@ -150,6 +149,7 @@
                 </section>
 
                 {{-- File hợp đồng --}}
+                {{-- File hợp đồng --}}
                 <section class="contract-section">
                     <h6 class="contract-section-title">
                         <i class="fa-solid fa-paperclip"></i>
@@ -157,8 +157,57 @@
                     </h6>
 
                     <div id="detailContractFiles">
-                        <span class="text-muted">Chưa có tệp đính kèm.</span>
+                        <span class="text-muted">Đang tải tệp hợp đồng...</span>
                     </div>
+                </section>
+                {{-- Chủ nhà ký hợp đồng --}}
+                <section class="contract-section"
+                    id="ownerSignatureSection"
+                    hidden>
+
+                    <h6 class="contract-section-title">
+                        <i class="fa-solid fa-signature"></i>
+                        Xác nhận chữ ký chủ nhà
+                    </h6>
+
+                    <p class="text-muted mb-3">
+                        Vui lòng ký tên vào khung bên dưới để hoàn tất hợp đồng.
+                    </p>
+
+                    <div class="owner-signature-wrapper">
+                        <canvas
+                            id="ownerSignatureCanvas"
+                            class="owner-signature-canvas">
+                        </canvas>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <small class="text-muted">
+                            Chữ ký của chủ nhà
+                        </small>
+
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary btn-sm"
+                            id="btnClearOwnerSignature">
+                            <i class="fa-solid fa-eraser"></i>
+                            Xóa chữ ký
+                        </button>
+                    </div>
+
+                    <div class="mt-3">
+                        <button
+                            type="button"
+                            class="btn btn-success"
+                            id="btnSubmitOwnerSignature">
+                            <i class="fa-solid fa-check"></i>
+                            Xác nhận ký hợp đồng
+                        </button>
+                    </div>
+
+                    <p class="text-muted mt-2 mb-0" style="font-size: 12px;">
+                        Sau khi xác nhận, hợp đồng sẽ được kích hoạt và không thể ký lại.
+                    </p>
                 </section>
 
             </div>

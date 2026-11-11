@@ -10,13 +10,13 @@ class RoomService extends Model
     protected $fillable = [
         'room_id',
         'service_id',
-        'price',
-        'is_active',
+        'quantity',
+        'unit_price',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
-        'is_active' => 'boolean',
+        'quantity' => 'decimal:2',
+        'unit_price' => 'decimal:2',
     ];
 
     public function room(): BelongsTo

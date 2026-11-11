@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Room;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
 
 class RoomService
 {
@@ -84,55 +85,117 @@ class RoomService
     // 3. Thêm phòng
     public function createRoom(array $data): Room
     {
-        $data['status'] = 'available';
-        return Room::create($data);
+        return DB::transaction(function () use ($data) {
+
+            // Tách dữ liệu dịch vụ khỏi dữ liệu phòng
+            $serviceIds = $data['services'] ?? [];
+            $servicePrices = $data['service_prices'] ?? [];
+
+            unset($data['services'], $data['service_prices']);
+
+            // Giữ nguyên logic trạng thái phòng hiện tại
+            $data['status'] = 'available';
+
+            // Tạo phòng
+            $room = Room::create($data);
+
+            // Lưu các dịch vụ được chọn
+            foreach ($serviceIds as $serviceId) {
+
+                $service = \App\Models\Service::findOrFail($serviceId);
+
+                $room->roomServices()->create([
+                    'service_id' => $serviceId,
+                    'quantity' => 1,
+                    'unit_price' => $servicePrices[$serviceId]
+                        ?? $service->unit_price,
+                ]);
+            }
+
+            return $room;
+        });
     }
+
+    // 4. Cập nhật phòng
 
     // 4. Cập nhật phòng
 
     public function updateRoom(Room $room, array $data): Room
     {
-        // Chỉ kiểm tra khi người dùng muốn thay đổi trạng thái
-        if (isset($data['status'])) {
+        return DB::transaction(function () use ($room, $data) {
 
-            // Kiểm tra phòng có hợp đồng hiệu lực hay không
-            $hasActiveContract = $room->contracts()
-                ->where('status', 'active')
-                ->whereDate('start_date', '<=', today())
-                ->where(function ($query) {
-                    $query->whereNull('end_date')
-                        ->orWhereDate('end_date', '>=', today());
-                })
-                ->exists();
+            // Tách dữ liệu dịch vụ khỏi dữ liệu phòng
+            $serviceIds = $data['services'] ?? [];
+            $servicePrices = $data['service_prices'] ?? [];
 
-            // Trường hợp chuyển sang đang thuê
-            if ($data['status'] === 'occupied' && !$hasActiveContract) {
-                throw ValidationException::withMessages([
-                    'status' => 'Không thể chuyển sang đang thuê khi phòng chưa có hợp đồng hiệu lực.'
-                ]);
+            unset($data['services'], $data['service_prices']);
+
+            // Kiểm tra hợp đồng hiệu lực
+            if (isset($data['status'])) {
+
+                $hasActiveContract = $room->contracts()
+                    ->where('status', 'active')
+                    ->whereDate('start_date', '<=', today())
+                    ->where(function ($query) {
+                        $query->whereNull('end_date')
+                            ->orWhereDate('end_date', '>=', today());
+                    })
+                    ->exists();
+
+                if ($data['status'] === 'occupied' && !$hasActiveContract) {
+                    throw ValidationException::withMessages([
+                        'status' => 'Không thể chuyển sang đang thuê khi phòng chưa có hợp đồng hiệu lực.'
+                    ]);
+                }
+
+                if ($data['status'] === 'available' && $hasActiveContract) {
+                    throw ValidationException::withMessages([
+                        'status' => 'Phòng vẫn đang có hợp đồng hiệu lực, không thể chuyển về trạng thái trống.'
+                    ]);
+                }
+
+                if ($data['status'] === 'inactive' && $hasActiveContract) {
+                    throw ValidationException::withMessages([
+                        'status' => 'Không thể ngừng sử dụng phòng khi vẫn còn hợp đồng hiệu lực.'
+                    ]);
+                }
             }
 
-            // Trường hợp chuyển sang phòng trống
-            if ($data['status'] === 'available' && $hasActiveContract) {
-                throw ValidationException::withMessages([
-                    'status' => 'Phòng vẫn đang có hợp đồng hiệu lực, không thể chuyển về trạng thái trống.'
-                ]);
+            // Cập nhật thông tin phòng
+            $room->update($data);
+
+            // Xóa các dịch vụ đã bỏ chọn
+            $room->roomServices()
+                ->when(
+                    !empty($serviceIds),
+                    fn($query) => $query->whereNotIn('service_id', $serviceIds)
+                )
+                ->when(
+                    empty($serviceIds),
+                    fn($query) => $query
+                )
+                ->delete();
+
+            // Đồng bộ các dịch vụ được chọn
+            foreach ($serviceIds as $serviceId) {
+
+                $service = \App\Models\Service::findOrFail($serviceId);
+
+                $room->roomServices()->updateOrCreate(
+                    [
+                        'service_id' => $serviceId,
+                    ],
+                    [
+                        'quantity' => 1,
+                        'unit_price' => $servicePrices[$serviceId]
+                            ?? $service->unit_price,
+                    ]
+                );
             }
 
-            // Không cho ngừng sử dụng khi vẫn có hợp đồng hiệu lực
-            if ($data['status'] === 'inactive' && $hasActiveContract) {
-                throw ValidationException::withMessages([
-                    'status' => 'Không thể ngừng sử dụng phòng khi vẫn còn hợp đồng hiệu lực.'
-                ]);
-            }
-        }
-
-        // Cập nhật thông tin phòng
-        $room->update($data);
-
-        return $room->refresh();
+            return $room->refresh();
+        });
     }
-
     // 5. Xóa phòng
     public function deleteRoom(Room $room): bool
     {
@@ -178,7 +241,8 @@ class RoomService
     public function getRoomDetail(Room $room): Room
     {
         return $room->load([
-            'contracts.tenants'
+            'contracts.tenants',
+            'roomServices.service',
         ]);
     }
 }

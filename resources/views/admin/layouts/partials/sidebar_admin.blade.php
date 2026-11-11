@@ -32,12 +32,28 @@
                 </ul>
             </li>
             @php
+            $serviceActive = request()->routeIs('services.*');
+            @endphp
+            <li class="menu-item has-sub {{ $serviceActive ? 'open' : '' }}">
+                <a href="" class="menu-link {{ $serviceActive ? 'active' : '' }}" aria-expanded="{{ $serviceActive ? 'true' : 'false' }}">
+                    <span class="menu-label">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        <span>Quản lý dịch vụ</span>
+                    </span>
+                    <i class="fa-solid fa-angle-down arrow"></i>
+                </a>
+                <ul class="submenu">
+                    <li><a href="{{ route('services.index') }}" class="{{ request()->routeIs('services.index') ? 'active' : '' }}">Danh sách dịch vụ</a></li>
+                    <li><a href="#">Danh sách phòng</a></li>
+                </ul>
+            </li>
+            @php
             $contractActive = request()->routeIs('contracts.*');
             @endphp
             <li class="menu-item has-sub {{ $contractActive ? 'open' : '' }}">
                 <a href="#" class="menu-link {{ $contractActive ? 'active' : '' }}" aria-expanded="{{ $roomActive ? 'true' : 'false' }}">
                     <span class="menu-label">
-                        <i class="fa-solid fa-cart-arrow-down"></i>
+                        <i class="fa-solid fa-file-contract"></i>
                         <span>Quản lý hợp đồng</span>
                     </span>
                     <i class="fa-solid fa-angle-down arrow"></i>
@@ -47,7 +63,6 @@
                     <li><a href="#">Đơn chờ xử lý</a></li>
                 </ul>
             </li>
-
             @php $tenantActive = request()->routeIs('tenants.*'); @endphp
             <li class="menu-item has-sub {{ $tenantActive ? 'open' : '' }}">
                 <a href="#" class="menu-link {{ $tenantActive ? 'active' : '' }}"

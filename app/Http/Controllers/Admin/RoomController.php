@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\RoomService;
 use Illuminate\Http\Request;
 use App\Models\Room;
+use App\Models\Service;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\RedirectResponse;
@@ -36,9 +37,21 @@ class RoomController extends Controller
         // Lấy thống kê phòng
         $statistics = $this->roomService->getStatistics();
 
+        // Lấy danh sách dịch vụ đang có
+        $services = Service::query()
+            ->orderBy('name')
+            ->get([
+                'id',
+                'name',
+                'type',
+                'unit',
+                'unit_price'
+            ]);
+
         return view('admin.rooms.index', compact(
             'rooms',
-            'statistics'
+            'statistics',
+            'services'
         ));
     }
 
@@ -64,6 +77,10 @@ class RoomController extends Controller
             'rent_price' => ['required', 'numeric', 'min:0'],
             'status' => ['required', 'in:available,occupied,maintenance'],
             'description' => ['nullable', 'string', 'max:1000'],
+            'services' => ['nullable', 'array'],
+            'services.*' => ['integer', 'distinct', 'exists:services,id',],
+            'service_prices' => ['nullable', 'array'],
+            'service_prices.*' => ['nullable', 'numeric', 'min:0',],
         ], [
             'name.required' => 'Vui lòng nhập tên phòng.',
             'name.max' => 'Tên phòng không được vượt quá 255 ký tự.',
@@ -76,7 +93,9 @@ class RoomController extends Controller
             'rent_price.min' => 'Giá thuê không được âm.',
             'status.required' => 'Vui lòng chọn trạng thái phòng.',
             'status.in' => 'Trạng thái phòng không hợp lệ.',
+
         ]);
+
 
         $room = $this->roomService->createRoom($validated);
 
@@ -99,6 +118,13 @@ class RoomController extends Controller
             'rent_price' => ['required', 'numeric', 'min:0'],
             'status' => ['required', 'in:available,occupied,maintenance,inactive'],
             'description' => ['nullable', 'string', 'max:1000'],
+
+            // Dịch vụ áp dụng cho phòng
+            'services' => ['nullable', 'array'],
+            'services.*' => ['integer', 'distinct', 'exists:services,id'],
+
+            'service_prices' => ['nullable', 'array'],
+            'service_prices.*' => ['nullable', 'numeric', 'min:0'],
         ], [
             'name.required' => 'Vui lòng nhập tên phòng.',
             'floor.integer' => 'Tầng phải là số nguyên.',

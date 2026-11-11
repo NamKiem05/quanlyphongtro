@@ -6,19 +6,21 @@
 // Khai báo 1 lần, không lặp lại trong vòng foreach
 $statusLabels = [
 'draft' => 'Bản nháp',
-'waiting_signature' => 'Chờ ký',
+'waiting_signature' => 'Chờ khách ký',
+'waiting_owner_signature'=> 'Chờ chủ nhà ký',
 'active' => 'Đang hiệu lực',
 'expired' => 'Đã hết hạn',
 'terminated' => 'Đã chấm dứt',
 ];
 
 $statCards = [
-['key' => '', 'label' => 'Tổng hợp đồng', 'value' => $statistics['total']],
-['key' => 'draft', 'label' => 'Bản nháp', 'value' => $statistics['draft']],
-['key' => 'waiting_signature', 'label' => 'Chờ ký', 'value' => $statistics['waiting_signature']],
-['key' => 'active', 'label' => 'Đang hiệu lực', 'value' => $statistics['active']],
-['key' => 'expired', 'label' => 'Đã hết hạn', 'value' => $statistics['expired']],
-['key' => 'terminated', 'label' => 'Đã chấm dứt', 'value' => $statistics['terminated']],
+    ['key' => '', 'label' => 'Tổng hợp đồng', 'value' => $statistics['total']],
+    ['key' => 'draft', 'label' => 'Bản nháp', 'value' => $statistics['draft']],
+    ['key' => 'waiting_signature', 'label' => 'Chờ người thuê ký', 'value' => $statistics['waiting_signature']],
+    ['key' => 'waiting_owner_signature', 'label' => 'Chờ chủ nhà ký', 'value' => $statistics['waiting_owner_signature']],
+    ['key' => 'active', 'label' => 'Đang hiệu lực', 'value' => $statistics['active']],
+    ['key' => 'expired', 'label' => 'Đã hết hạn', 'value' => $statistics['expired']],
+    ['key' => 'terminated', 'label' => 'Đã chấm dứt', 'value' => $statistics['terminated']],
 ];
 
 $currentStatus = (string) request('status', '');
@@ -36,7 +38,7 @@ $hasFilter = request()->filled('search')
                 <p class="page-subtitle">Theo dõi và quản lý hợp đồng thuê phòng</p>
             </div>
 
-            <button type="button" class="btn btn-brand" id="btnCreateContract">
+            <button type="button" class="btn btn-brand" id="btnCreateContract" data-open-create>
                 <i class="fa-solid fa-plus"></i>
                 Tạo hợp đồng
             </button>
@@ -190,35 +192,119 @@ $hasFilter = request()->filled('search')
                             </span>
                         </td>
 
-                        <td class="text-center">
-                            <button
-                                type="button"
-                                class="btn-icon btn-view-contract"
-                                data-id="{{ $contract->id }}"
-                                data-url="{{ route('contracts.show', $contract->id) }}"
-                                title="Xem chi tiết">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                            @if (in_array($contract->status, ['draft', 'waiting_signature']))
-                            <button type="button"
-                                class="btn-icon btn-edit-contract"
-                                data-id="{{ $contract->id }}"
-                                data-url="{{ route('contracts.edit-data', $contract->id) }}"
-                                data-update-url="{{ route('contracts.update', $contract->id) }}"
-                                title="Chỉnh sửa hợp đồng">
-                                <i class="fa-solid fa-pen-to-square"></i>
-                            </button>
 
-                            <button type="button"
-                                class="btn-icon btn-delete-contract"
-                                data-id="{{ $contract->id }}"
-                                data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
-                                data-url="{{ route('contracts.destroy', $contract->id) }}"
-                                title="Xóa hợp đồng">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                            @endif
+                        <td class="text-center">
+                            <div class="contract-actions-dropdown">
+
+                                {{-- Nút 3 chấm --}}
+                                <button
+                                    type="button"
+                                    class="btn-icon btn-contract-menu-toggle"
+                                    aria-expanded="false"
+                                    title="Thao tác">
+                                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                                </button>
+
+                                {{-- Danh sách thao tác --}}
+                                <div class="contract-actions-menu" hidden>
+                                    <a
+                                        href="{{ route('contracts.pdf', $contract->id) }}"
+                                        class="contract-menu-item"
+                                        target="_blank"
+                                        title="Xuất PDF hợp đồng">
+                                        <i class="fa-solid fa-file-pdf"></i>
+                                        <span>Xuất PDF</span>
+                                    </a>
+                                    {{-- Xem chi tiết --}}
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item btn-view-contract"
+                                        data-id="{{ $contract->id }}"
+                                        data-url="{{ route('contracts.show', $contract->id) }}">
+                                        <i class="fa-solid fa-eye"></i>
+                                        <span>Xem chi tiết</span>
+                                    </button>
+
+                                    {{-- Chuyển trạng thái --}}
+                                    @if ($contract->status === 'draft')
+
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item btn-send-signature"
+                                        data-id="{{ $contract->id }}"
+                                        data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
+                                        data-url="{{ route('contracts.send-for-signature', $contract->id) }}">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                        <span>Gửi chờ ký</span>
+                                    </button>
+
+                                    @elseif ($contract->status === 'waiting_signature')
+
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item btn-activate-contract"
+                                        data-id="{{ $contract->id }}"
+                                        data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
+                                        data-url="{{ route('contracts.activate', $contract->id) }}">
+                                        <i class="fa-solid fa-file-circle-check"></i>
+                                        <span>Xác nhận đã ký</span>
+                                    </button>
+                                    @elseif ($contract->status === 'waiting_owner_signature')
+
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item btn-owner-sign-contract"
+                                        data-id="{{ $contract->id }}"
+                                        data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
+                                        data-url="{{ route('contracts.owner-sign', $contract->id) }}"
+                                        data-detail-url="{{ route('contracts.show', $contract->id) }}">
+
+                                        <i class="fa-solid fa-signature"></i>
+                                        <span>Ký hợp đồng</span>
+                                    </button>
+                                    @elseif ($contract->status === 'active')
+
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item btn-terminate-contract"
+                                        data-id="{{ $contract->id }}"
+                                        data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
+                                        data-url="{{ route('contracts.terminate', $contract->id) }}">
+                                        <i class="fa-solid fa-file-circle-xmark"></i>
+                                        <span>Chấm dứt hợp đồng</span>
+                                    </button>
+
+                                    @endif
+
+                                    {{-- Chỉnh sửa và xóa --}}
+                                    @if (in_array($contract->status, ['draft', 'waiting_signature']))
+
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item btn-edit-contract"
+                                        data-id="{{ $contract->id }}"
+                                        data-url="{{ route('contracts.edit-data', $contract->id) }}"
+                                        data-update-url="{{ route('contracts.update', $contract->id) }}">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                        <span>Chỉnh sửa</span>
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="contract-menu-item danger btn-delete-contract"
+                                        data-id="{{ $contract->id }}"
+                                        data-code="HĐ-{{ str_pad($contract->id, 4, '0', STR_PAD_LEFT) }}"
+                                        data-url="{{ route('contracts.destroy', $contract->id) }}">
+                                        <i class="fa-solid fa-trash"></i>
+                                        <span>Xóa hợp đồng</span>
+                                    </button>
+
+                                    @endif
+
+                                </div>
+                            </div>
                         </td>
+
                     </tr>
                     @empty
                     <tr>
@@ -256,6 +342,7 @@ $hasFilter = request()->filled('search')
 @include('admin.contracts.partials.detail_modal')
 @include('admin.contracts.partials.edit_modal')
 @include('admin.contracts.partials.delete_modal')
+@include('admin.contracts.partials.create_modal')
 
 @endsection
 {{--

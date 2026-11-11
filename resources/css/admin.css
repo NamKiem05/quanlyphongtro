@@ -323,7 +323,7 @@ header {
 .profile-modal {
     position: relative;
     width: 100%;
-    max-width: 480px;
+    max-width: 600px;
     max-height: 92vh;
     overflow-y: auto;
     padding: 26px 28px;
